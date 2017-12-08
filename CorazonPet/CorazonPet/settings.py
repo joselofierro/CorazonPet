@@ -26,6 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '192.168.10.106',
+    '.elasticbeanstalk.com',
 ]
 
 # Application definition
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'apps.custom_tag',
     'fcm_django',
     'apps.notificacion',
+    'storages',
     'rest_framework',
     'rest_framework_jwt',
 
@@ -160,6 +162,21 @@ STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 
 # imagenes subidas por usuario en entorno del server
 MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media")
+
+# S3
+AWS_STORAGE_BUCKET_NAME = 'CorazonPet'
+AWS_ACCESS_KEY_ID = 'AKIAIKEWELJW4WU47OUQ'
+AWS_SECRET_ACCESS_KEY = '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'
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+# STATICFILES_LOCATION = 'static'
+# STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+# STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+# MEDIAFILES_LOCATION = 'media'
+# MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+# DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
 """REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
