@@ -152,7 +152,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 # MEDIA_URL = '/media/'
 
 # DONDE DJANGO BUSCAR NUESTROS ARCHIVOS (donde estaran en el proyecto)
@@ -170,9 +170,9 @@ AWS_SECRET_ACCESS_KEY = 'gOjd2U6tI4qYHJ2L5A82O67QknBzG4DSiXtfxfBm'
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_LOCATION = 'static'
+# STATICFILES_LOCATION = 'static'
 # STATICFILES_STORAGE = 'custom_storages.StaticStorage'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+# STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 
 """MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
