@@ -153,7 +153,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # STATIC_URL = '/static/'
-# MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 # DONDE DJANGO BUSCAR NUESTROS ARCHIVOS (donde estaran en el proyecto)
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
@@ -165,18 +165,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media")
 
 # S3
 AWS_STORAGE_BUCKET_NAME = 'CorazonPet'
-AWS_ACCESS_KEY_ID = 'AKIAIKEWELJW4WU47OUQ'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = 'AKIAJ6M7ESITMZ2HV53Q'
+AWS_SECRET_ACCESS_KEY = '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'
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-# STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_LOCATION = 'static'
-STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+# STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 
-MEDIAFILES_LOCATION = 'media'
-MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+#MEDIAFILES_LOCATION = 'media'
+#MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+#DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
 """REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
