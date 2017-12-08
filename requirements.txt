@@ -17,7 +17,6 @@ docopt==0.6.2
 docutils==0.14
 drf-base64==0.9.2
 fcm-django==0.2.11
-get==0.0.0
 idna==2.6
 Jinja2==2.9.6
 jmespath==0.9.3
