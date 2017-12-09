@@ -5,7 +5,8 @@ from apps.mascota_calle.models import MascotaCalle
 
 
 class MascotaCalleAdmin(admin.ModelAdmin):
-    list_display = ('fecha', 'hora', 'imagen_mascota_calle', 'latitud', 'longitud', 'direccion', 'telefono')
+    list_display = ('id', 'fecha', 'hora', 'imagen_mascota_calle', 'latitud', 'longitud', 'direccion', 'telefono')
+    list_filter = ('id', 'fecha', 'hora', 'telefono')
     list_per_page = 10
 
 
