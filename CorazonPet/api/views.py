@@ -67,6 +67,20 @@ class PetLostApi(APIView):
     def post(self, request):
         mascota_serializer = ReportarMascotaPremiumSerializer(data=request.data)
         if mascota_serializer.is_valid():
+            titulo = "CorazónPet"
+            mensaje = "Una mascota ha sido reportada como perdia. ¡Ingresa a la nuestra app y ayúdanos a encontrarla! 🐕"
+
+            # Obtenemos los usuarios Android
+            usuarios_android = FCMDevice.objects.filter(type='android')
+
+            # Enviamos la notificacion
+            usuarios_android.send_message(data={'titulo': titulo, 'mensaje': mensaje})
+
+            # Obtenemos los usuarios ios
+            usuarios_ios = FCMDevice.objects.filter(type='ios')
+            # Enviamos la notificacion
+            usuarios_ios.send_message(title=titulo, body=mensaje, sound='default')
+
             mascota_serializer.save()
             return Response(mascota_serializer.data, status=status.HTTP_201_CREATED)
         return Response(mascota_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
