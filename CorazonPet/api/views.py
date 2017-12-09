@@ -44,14 +44,11 @@ class User(CreateAPIView):
 def login(request, email, contrasena):
     if request.method == 'GET':
         try:
-            usuario = Usuario.objects.get(email=email)
-            if check_password(contrasena, usuario.contrasena):
-                serializer = CreateUserSerializer(usuario, many=False)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({'data': 'Contraseña invalida'}, status=status.HTTP_400_BAD_REQUEST)
+            usuario = Usuario.objects.get(email=email, contrasena=contrasena)
+            serializer = CreateUserSerializer(usuario, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
-            return Response({'data': 'No existe usuario con ese email'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'data': 'Credenciales incorrectas'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # API de listado de usuario por correo
