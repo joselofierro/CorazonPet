@@ -92,6 +92,10 @@ TEMPLATES = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+]
+
 WSGI_APPLICATION = 'CorazonPet.wsgi.application'
 
 # Database

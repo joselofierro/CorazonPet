@@ -7,6 +7,7 @@ from rest_framework.generics import *
 from rest_framework.views import *
 from api.serializers import *
 from django.core.files.base import ContentFile
+from django.contrib.auth.hashers import check_password, make_password
 
 
 # API con el listado de tipos de mascota y su respectiva razas
@@ -23,6 +24,34 @@ class User(CreateAPIView):
 
     def get_queryset(self):
         return Usuario.objects.all()
+
+    def post(self, request):
+        usuario_serializer = CreateUserSerializer(data=request.data)
+        if usuario_serializer.is_valid():
+            contrasena = request.data['contrasena']
+            contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
+            if contrasena != "":
+                usuario_obj = usuario_serializer.save()
+                usuario_obj.contrasena = contrasena_cifrada
+                usuario_obj.save()
+                return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(usuario_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def login(request, email, contrasena):
+    if request.method == 'GET':
+        try:
+            usuario = Usuario.objects.get(email=email)
+            if check_password(contrasena, usuario.contrasena):
+                serializer = CreateUserSerializer(usuario, many=False)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'data': 'Contraseña invalida'}, status=status.HTTP_400_BAD_REQUEST)
+        except Usuario.DoesNotExist:
+            return Response({'data': 'No existe usuario con ese email'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # API de listado de usuario por correo
