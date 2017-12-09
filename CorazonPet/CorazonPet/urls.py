@@ -20,7 +20,7 @@ from django.contrib import admin
 from CorazonPet import settings
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^$', admin.site.urls),
     url(r'^api/', include('api.urls', namespace='api')),
 
 ]
