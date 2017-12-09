@@ -157,7 +157,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 
 # DONDE DJANGO BUSCAR NUESTROS ARCHIVOS (donde estaran en el proyecto)
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
@@ -165,7 +165,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 
 # imagenes subidas por usuario en entorno del server
-MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media/")
 
 # S3
 AWS_STORAGE_BUCKET_NAME = 'corazonpet'
@@ -183,6 +183,7 @@ STATICFILES_LOCATION = 'static'
 STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 
 MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
 # (Firebase Cloud Messaging)
