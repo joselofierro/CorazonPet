@@ -16,7 +16,7 @@ class Usuario(models.Model):
         (FEMENINO, 'Femenino')
     )
 
-    idFacebook = models.CharField(blank=True, null=True, max_length=150, unique=True)
+    idFacebook = models.CharField(blank=True, null=True, max_length=150)
     nombre = models.CharField(max_length=30, blank=False, null=False)
     apellido = models.CharField(max_length=30, blank=True, null=True)
     edad = models.IntegerField(blank=True, null=True)
