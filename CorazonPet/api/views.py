@@ -27,18 +27,29 @@ class User(CreateAPIView):
         return Usuario.objects.all()
 
     def post(self, request):
-        usuario_serializer = CreateUserSerializer(data=request.data)
-        if usuario_serializer.is_valid():
-            contrasena = request.data['contrasena']
-            contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
-            if contrasena != "":
-                usuario_obj = usuario_serializer.save()
-                usuario_obj.contrasena = contrasena_cifrada
-                usuario_obj.save()
-                return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
-            return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(usuario_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            usuario = Usuario.objects.get(email=request.data['email'])
+            usuario_serializer = CreateUserSerializer(usuario)
+            return Response(usuario_serializer.data, status=status.HTTP_200_OK)
+        except Usuario.DoesNotExist:
+            usuario_serializer = CreateUserSerializer(data=request.data)
+            if usuario_serializer.is_valid():
+                if 'contrasena' in request.data:
+                    contrasena = request.data['contrasena']
+                    contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
+                    if contrasena != "":
+                        usuario_obj = usuario_serializer.save()
+                        usuario_obj.contrasena = contrasena_cifrada
+                        usuario_obj.save()
+                        return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+                    else:
+                        usuario_serializer.save()
+                        return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    usuario_serializer.save()
+                    return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(usuario_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
