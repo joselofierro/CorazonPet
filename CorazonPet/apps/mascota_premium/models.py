@@ -19,7 +19,7 @@ class MascotaPremium(models.Model):
     def __str__(self):
         return self.mascota.nombre
 
-    # metodo que guarda la instancia del modelo al crearlo
+    """# metodo que guarda la instancia del modelo al crearlo
     def save(self):
         self.generate_qr()
         super(MascotaPremium, self).save()
@@ -40,7 +40,7 @@ class MascotaPremium(models.Model):
 
         with open(settings.MEDIA_ROOT + "Codigoqrmascota/" + filename, "rb") as reopen:
             django_file = File(reopen)
-            self.codigoqr.save(filename, django_file, save=False)
+            self.codigoqr.save(filename, django_file, save=False)"""
 
     def imagen_qr(self):
         if self.codigoqr:
