@@ -32,7 +32,8 @@ urlpatterns = [
     url(r'^cambiar_estado_recordatorio', status_recordatorio, name='cambiar_estado_recordatorio'),
     url(r'^agregar_mascota_premium', MascotaPremiumAPI.as_view(), name='mascota_premium_api'),
     url(r'^create_fcm', CreateFCM.as_view(), name='create_fcm_api'),
-    url(r'^encontre_mascota_premium', find_pet_premium, name='encontre_mascota_premium')
+    url(r'^encontre_mascota_premium', find_pet_premium, name='encontre_mascota_premium'),
+    url(r'^refugiar_perdido_calle', refugiarPerdido, name='refugiar_perdido_calle'),
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)

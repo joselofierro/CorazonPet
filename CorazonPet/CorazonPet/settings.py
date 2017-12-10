@@ -199,3 +199,11 @@ FCM_DJANGO_SETTINGS = {
     "DELETE_INACTIVE_DEVICES": False,
 
 }
+
+# EMAIL CONFIG
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'backend.corazonpet@gmail.com'
+EMAIL_HOST_PASSWORD = 'CorazonPet2017'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,7 +1,8 @@
 import base64
+from django.template.loader import render_to_string
 from fcm_django.api.rest_framework import FCMDeviceSerializer
 from fcm_django.models import FCMDevice
-from rest_framework import request
+from django.core.mail import send_mail
 from rest_framework.decorators import api_view
 from rest_framework.generics import *
 from rest_framework.views import *
@@ -345,3 +346,25 @@ def find_pet_premium(request):
         fcm_obj.send_message(data={'titulo': titulo, 'mensaje': mensaje})
 
     return Response({'data': 'Notificacion enviada'}, status=status.HTTP_201_CREATED)
+
+
+# API PARA REFUGIAR MASCOTA PERDIDA CALLE
+@api_view(['POST'])
+def refugiarPerdido(request):
+    if request.method == "POST":
+        # Llegaran por parametros los atributos de mascota calle: id, imagen, tiempo, numero, nombre
+        msg = render_to_string('mail_templates/RefugiarCalle.html', {
+            'usuario': request.data['nombre'],
+            'id': request.data['id'],
+            'dias': request.data['tiempo'],
+            'numero': request.data['numero']
+        })
+        send_mail(
+            'Alguien quiere refugiar una mascota',
+            'Mensaje',
+            'backend.corazon@gmail.com',
+            ['giussepr@gmail.com'],
+            html_message=msg)
+        return Response({'data': 'Gracias'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'¿Que haces?': 'Ola k ace, chismoseando o que hace? 👽🐫'})
