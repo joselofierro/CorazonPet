@@ -339,11 +339,11 @@ def find_pet_premium(request):
     mensaje = "¡Un usuario ha encontrado tu mascota, pronto nos pondremos en contacto contigo!"
 
     fcm_obj = FCMDevice.objects.filter(device_id=usuario_mascota.email)
-    if fcm_obj.type == "ios":
-        fcm_obj.send_message(title=titulo, body=mensaje, sound='default')
-
-    elif fcm_obj.type == "android":
-        fcm_obj.send_message(data={'titulo': titulo, 'mensaje': mensaje})
+    for fcm in fcm_obj:
+        if fcm.type == "ios":
+            fcm.send_message(title=titulo, body=mensaje, sound='default')
+        elif fcm.type == "android":
+            fcm.send_message(data={'titulo': titulo, 'mensaje': mensaje})
 
     # Llegaran por parametros los atributos: latitud, longitud, telefono, microchip
     msg = render_to_string('mail_templates/EncontroMascotaPremium.html', {
