@@ -12,6 +12,7 @@ class Aliado(models.Model):
     descuento = models.IntegerField()
     observacion = models.TextField(blank=True, null=True)
     logo = models.ImageField(upload_to=upload_location)
+    sitio = models.URLField(blank=True, null=False, default='')
 
     def imagen_aliado(self):
         if self.logo:
