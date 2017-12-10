@@ -345,6 +345,22 @@ def find_pet_premium(request):
     elif fcm_obj.type == "android":
         fcm_obj.send_message(data={'titulo': titulo, 'mensaje': mensaje})
 
+    # Llegaran por parametros los atributos: latitud, longitud, telefono, microchip
+    msg = render_to_string('mail_templates/EncontroMascotaPremium.html', {
+        'numero': request.data['telefono'],
+        'mascota': mascota_perdida.mascota.nombre,
+        'usuario': usuario_mascota.id,
+        'latitud': request.data['latitud'],
+        'longitud': request.data['longitud'],
+    })
+
+    send_mail(
+        'Han encontrado una mascota premium',
+        'Mensaje',
+        'backend.corazon@gmail.com',
+        ['giussepr@gmail.com'],
+        html_message=msg)
+
     return Response({'data': 'Notificacion enviada'}, status=status.HTTP_201_CREATED)
 
 
