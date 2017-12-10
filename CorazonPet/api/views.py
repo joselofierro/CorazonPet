@@ -338,7 +338,7 @@ def find_pet_premium(request):
     titulo = "CorazónPet"
     mensaje = "¡Un usuario ha encontrado tu mascota, pronto nos pondremos en contacto contigo!"
 
-    fcm_obj = FCMDevice.objects.get(device_id=usuario_mascota.email)
+    fcm_obj = FCMDevice.objects.filter(device_id=usuario_mascota.email)
     if fcm_obj.type == "ios":
         fcm_obj.send_message(title=titulo, body=mensaje, sound='default')
 
