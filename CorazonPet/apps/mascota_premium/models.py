@@ -1,5 +1,7 @@
+from io import BytesIO
+
 import qrcode as qrcode
-from django.core.files import File
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 
 # Create your models here.
@@ -19,28 +21,27 @@ class MascotaPremium(models.Model):
     def __str__(self):
         return self.mascota.nombre
 
-    """# metodo que guarda la instancia del modelo al crearlo
-    def save(self):
+    # metodo que guarda la instancia del modelo al crearlo
+    def save(self, **kwargs):
         self.generate_qr()
-        super(MascotaPremium, self).save()
+        super(MascotaPremium, self).save(**kwargs)
 
     def generate_qr(self):
         qr = qrcode.QRCode(version=1, error_correction=qrcode.ERROR_CORRECT_L, box_size=10, border=4)
         qr.add_data(self.microchip)
         # compila la data a un array de QR
         qr.make(fit=True)
-
-        filename = 'qrcode_%s_%s.png' % (self.mascota.nombre, self.microchip)
-
         # creamos la imagen QR
         img = qr.make_image()
 
-        from django.conf import settings
-        img.save(settings.MEDIA_ROOT + "Codigoqrmascota/" + filename)
-
-        with open(settings.MEDIA_ROOT + "Codigoqrmascota/" + filename, "rb") as reopen:
-            django_file = File(reopen)
-            self.codigoqr.save(filename, django_file, save=False)"""
+        buffer = BytesIO()
+        # guardamos el buffer en la imagen
+        img.save(buffer)
+        filename = 'qrcode_%s.png' % self.mascota.nombre
+        filebuffer = InMemoryUploadedFile(
+            buffer, None, filename, 'image/png', buffer.getbuffer, None)
+        # guardamos la imagen QR en el campo de la imagen
+        self.codigoqr.save(filename, filebuffer, False)
 
     def imagen_qr(self):
         if self.codigoqr:

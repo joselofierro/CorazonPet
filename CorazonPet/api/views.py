@@ -26,9 +26,10 @@ class User(CreateAPIView):
     def get_queryset(self):
         return Usuario.objects.all()
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         try:
             usuario = Usuario.objects.get(email=request.data['email'])
+            print(usuario)
             usuario_serializer = CreateUserSerializer(usuario)
             return Response(usuario_serializer.data, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
@@ -36,8 +37,8 @@ class User(CreateAPIView):
             if usuario_serializer.is_valid():
                 if 'contrasena' in request.data:
                     contrasena = request.data['contrasena']
-                    contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
                     if contrasena != "":
+                        contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
                         usuario_obj = usuario_serializer.save()
                         usuario_obj.contrasena = contrasena_cifrada
                         usuario_obj.save()
