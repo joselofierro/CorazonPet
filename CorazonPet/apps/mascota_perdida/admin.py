@@ -5,7 +5,7 @@ from apps.mascota_perdida.models import MascotaPerdida
 
 
 class MascotaPerdidaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fecha', 'hora', 'mascota', 'direccion', 'celular', 'observacion')
+    list_display = ('id', 'fecha', 'hora', 'volante_pet', 'mascota', 'direccion', 'celular', 'observacion')
     list_per_page = 10
     list_filter = ('mascota',)
 

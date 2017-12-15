@@ -5,7 +5,7 @@ from apps.media_mascota.models import ImagenesMascota
 
 
 class ImagenMascotaAdmin(admin.ModelAdmin):
-    list_display = ('mascota', 'admin_image')
+    list_display = ('id', 'mascota', 'admin_image')
     list_filter = ('mascota',)
 
 

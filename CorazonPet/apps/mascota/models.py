@@ -31,6 +31,7 @@ class Mascota(models.Model):
     aseguradora = models.TextField(max_length=50, blank=True)
     numero_poliza = models.TextField(max_length=50, blank=True)
     numero_contacto = models.BigIntegerField(blank=True, default=0)
+    esterilizado = models.BooleanField(default=False)
 
     def __str__(self):
         return '{} de {} {}'.format(self.nombre, self.usuario.nombre, self.usuario.apellido)

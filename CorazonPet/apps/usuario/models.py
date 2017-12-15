@@ -5,8 +5,11 @@ import uuid
 
 from django.db import models
 
-
 # Create your models here.
+from apps.ciudad.models import Ciudad
+from apps.departamento.models import Departamento
+
+
 class Usuario(models.Model):
     MASCULINO = 'M'
     FEMENINO = 'F'
@@ -28,6 +31,7 @@ class Usuario(models.Model):
     email = models.CharField(max_length=30, blank=False, null=False, unique=True)
     premium = models.BooleanField(default=False)
     contrasena = models.CharField(blank=True, null=False, default="", max_length=100)
+    ciudad = models.ForeignKey(Ciudad, default='', null=True)
 
     class Meta:
         permissions = (
@@ -41,6 +45,14 @@ class Usuario(models.Model):
             return 'No hay imagen'
 
     foto_perfil.allow_tags = True
+
+    def __str__(self):
+        return self.nombre
+
+
+class VacunaUsuario(models.Model):
+    nombre = models.CharField(max_length=70, blank=False, null=False)
+    usuario = models.ForeignKey(Usuario)
 
     def __str__(self):
         return self.nombre

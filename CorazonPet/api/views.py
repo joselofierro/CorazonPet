@@ -81,7 +81,7 @@ class PetLostApi(APIView):
         mascota_serializer = ReportarMascotaPremiumSerializer(data=request.data)
         if mascota_serializer.is_valid():
             titulo = "CorazónPet"
-            mensaje = "Una mascota ha sido reportada como perdia. ¡Ingresa a la nuestra app y ayúdanos a encontrarla! 🐕"
+            mensaje = "Una mascota ha sido reportada como perdida. ¡Ingresa a la nuestra app y ayúdanos a encontrarla! 🐕"
 
             # Obtenemos los usuarios Android
             usuarios_android = FCMDevice.objects.filter(type='android')
@@ -323,7 +323,7 @@ def status_recordatorio(request):
         return Response({'data': 'Actualizado'}, status=status.HTTP_200_OK)
 
     except Recordatorio.DoesNotExist:
-        return Response({'data': 'Recordatorio no existe'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'data': 'Recordatorio no existe'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # API PARA GENERAR MASCOTA PREMIUM
@@ -345,11 +345,10 @@ def find_pet_premium(request):
     # obtener el usuario relacionado a esa mascota
     usuario_mascota = Usuario.objects.get(mascota__nombre=mascota_perdida)
     print(usuario_mascota)
-    # usuario = Usuario.objects.get(id=usuario_mascota)
 
     titulo = "CorazónPet"
     mensaje = "¡Un usuario ha encontrado tu mascota, pronto nos pondremos en contacto contigo!"
-
+    # obtenemos el usuario en el FCMDEVICE por el email
     fcm_obj = FCMDevice.objects.filter(device_id=usuario_mascota.email)
     for fcm in fcm_obj:
         if fcm.type == "ios":
@@ -396,3 +395,210 @@ def refugiarPerdido(request):
         return Response({'data': 'Gracias'}, status=status.HTTP_200_OK)
     else:
         return Response({'¿Que haces?': 'Ola k ace, chismoseando o que hace? 👽🐫'})
+
+
+# API PARA QUE USUARIO CREE VACUNAS
+class CreateVacunaUsuarioAPI(CreateAPIView):
+    serializer_class = CVacunaUsuarioSerializer
+
+    def post(self, request, *args, **kwargs):
+        # si ya existe vacuna con ese nombre
+        if VacunaUsuario.objects.filter(nombre=request.data['nombre']).exists():
+            return Response({'data': 'Vacuna ya existe con ese nombre'}, status=status.HTTP_200_OK)
+        else:
+            vacuna_obj_serial = CVacunaUsuarioSerializer(data=request.data)
+            if vacuna_obj_serial.is_valid():
+                vacuna_obj_serial.save()
+                return Response({'data': 'Vacuna creada'}, status=status.HTTP_201_CREATED)
+            return Response({'data': vacuna_obj_serial.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# API CON LISTADO DE VACUNAS CREADAS POR EL USUARIO
+class VacunaUsuarioAPI(ListAPIView):
+    serializer_class = VacunaUsuarioSerializer
+
+    def get_queryset(self):
+        # filtramos las vacunas creadas por el id del usuario
+        return VacunaUsuario.objects.filter(usuario=self.kwargs['id_user']).order_by('nombre')
+
+
+# API GENERICA QUE ACTUALIZA O ELIMINAR LAS VACUNAS POR SU ID
+class GVacunaUsuarioAPI(APIView):
+    def get_obj_vacuna(self, pk):
+        try:
+            return VacunaUsuario.objects.get(id=pk)
+        except VacunaUsuario.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, format=None):
+        vacuna_obj = self.get_obj_vacuna(pk)
+        serializer = CVacunaUsuarioSerializer(vacuna_obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        vacuna_obj = self.get_obj_vacuna(pk)
+        vacuna_obj.delete()
+        return Response({'data': 'Vacuna eliminada'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# API GENERICA PARA ACTUALIZAR Y ELIMINAR UNA MASCOTA
+class GMascotaUserAPI(APIView):
+    def get_obj_mascota(self, pk):
+        try:
+            return Mascota.objects.get(id=pk)
+        except Mascota.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj_mascota = self.get_obj_mascota(pk)
+        serializer = MascotaUserSerializer(obj_mascota)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk, format=None):
+        obj_mascota = self.get_obj_mascota(pk)
+        serializer = GMascotaUserSerializer(obj_mascota, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+
+        return Response({'data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        obj_mascota = self.get_obj_mascota(pk)
+        obj_mascota.delete()
+        return Response({'data': 'Mascota eliminada'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['PUT'])
+def cambio_foto_mascota(request):
+    try:
+        id_mascota = request.data['id']
+        imagen_64 = request.data['imagen']
+
+        imagen_decode = base64.b64decode(imagen_64)
+
+        obj_mascota = Mascota.objects.get(id=id_mascota)
+
+        obj_mascota.foto_perfil = ContentFile(imagen_decode, name='imagen_mascota_' + obj_mascota.nombre + "_" + str(
+            obj_mascota.id) + '.jpg')
+
+        obj_mascota.save()
+
+        return Response({'data': 'Imagen actualizada'}, status=status.HTTP_200_OK)
+    except Mascota.DoesNotExist:
+        return Response({'data': 'Mascota no existe'}, status=status.HTTP_404_NOT_FOUND)
+
+
+# API PARA ELIMINAR FOTO DE MASCOTA
+@api_view(['delete'])
+def eliminar_foto_mascota(request, pk):
+    try:
+        obj_media = ImagenesMascota.objects.get(id=pk)
+        obj_media.delete()
+        return Response({'data': 'Imagen eliminada'}, status=status.HTTP_204_NO_CONTENT)
+    except ImagenesMascota.DoesNotExist:
+        return Response({'data': 'Imagen no existe'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['delete'])
+def eliminar_reporte_mascota_perdida(request, pk):
+    try:
+        obj_mascota_perdida = MascotaPerdida.objects.get(id=pk)
+        obj_mascota_perdida.delete()
+        return Response({'data': 'Reporte eliminado'}, status=status.HTTP_204_NO_CONTENT)
+    except MascotaPerdida.DoesNotExist:
+        return Response({'data': 'Reporte no existe'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GHistorialVacunaApi(APIView):
+    def obj_historial_vacuna(self, pk):
+        try:
+            return HistorialVacuna.objects.get(id=pk)
+        except HistorialVacuna.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, format=None):
+        obj_historial_vacuna = self.obj_historial_vacuna(pk)
+        serializer = GHistorialVacunaSerializer(obj_historial_vacuna, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        obj_historial_vacuna = self.obj_historial_vacuna(pk)
+        obj_historial_vacuna.delete()
+        return Response({'data': 'Historial de vacuna eliminado'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# API GENERICA PARA ACTUALIZAR Y ELIMINAR MEDICAMENTOS
+class GHistorialMedicamentoApi(APIView):
+    def obj_historial_medicamento(self, pk):
+        try:
+            return HistorialMedicamento.objects.get(id=pk)
+        except HistorialMedicamento.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, format=None):
+        obj_historial_medicamento = self.obj_historial_medicamento(pk)
+        serializer = GHistorialMedicamentoSerializer(obj_historial_medicamento, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        obj_historial_medicamento = self.obj_historial_medicamento(pk)
+        obj_historial_medicamento.delete()
+        return Response({'data': 'Historial de vacuna eliminado'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# API GENERICA PARA ACTUALIZAR Y ELIMINAR RECORDATORIO
+class GRecordatorioApi(APIView):
+    def obj_recordatorio(self, pk):
+        try:
+            return Recordatorio.objects.get(id=pk)
+        except Recordatorio.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, format=None):
+        obj_recordatorio = self.obj_recordatorio(pk)
+        serializer = RecordatorioSerializer(obj_recordatorio, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+
+        return Response({'data': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        obj_recordatorio = self.obj_recordatorio(pk)
+        obj_recordatorio.delete()
+        return Response({'data': 'Recordatorio eliminado'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# API PARA LISTADO DE CIUDADES
+class CiudadesApi(ListAPIView):
+    serializer_class = CiudadSerializer
+
+    def get_queryset(self):
+        return Ciudad.objects.all().order_by('nombre')
+
+
+@api_view(['post'])
+def generatevolante(request):
+    try:
+        obj_mascota = MascotaPerdida.objects.get(id=request.data['id'])
+
+        img_64 = request.data['volante']
+        img_deco = base64.b64decode(img_64)
+
+        obj_mascota.volante = ContentFile(img_deco, name='imagen_mascota_' + obj_mascota.mascota.nombre + "_" + str(
+            obj_mascota.mascota.id) + '.jpg')
+
+        obj_mascota.save()
+        return Response({'data': 'volante generado'}, status=status.HTTP_200_OK)
+    except MascotaPerdida.DoesNotExist:
+        return Response({'data': 'no found'}, status=status.HTTP_400_BAD_REQUEST)

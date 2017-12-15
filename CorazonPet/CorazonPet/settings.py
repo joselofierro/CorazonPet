@@ -30,7 +30,6 @@ ALLOWED_HOSTS = [
 ]
 
 # Application definition
-
 INSTALLED_APPS = [
 
     'django.contrib.admin',
@@ -58,6 +57,8 @@ INSTALLED_APPS = [
     'apps.custom_tag',
     'fcm_django',
     'apps.notificacion',
+    'apps.departamento',
+    'apps.ciudad',
     'storages',
     'rest_framework',
     'rest_framework_jwt',

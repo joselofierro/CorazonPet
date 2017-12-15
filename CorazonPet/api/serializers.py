@@ -3,6 +3,7 @@ from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from apps.aliado.models import Aliado
+from apps.ciudad.models import Ciudad
 from apps.historial_medicamento.models import HistorialMedicamento
 from apps.historial_vacuna.models import HistorialVacuna
 from apps.mascota_premium.models import MascotaPremium
@@ -16,7 +17,7 @@ from apps.recordatorio.models import Recordatorio, IdentificadorRecordatorio
 from apps.sitio_mapa.models import SitioMapa
 from apps.tipo_mascota.models import TipoMascota
 from apps.tipo_sitio.models import TipoSitio
-from apps.usuario.models import Usuario
+from apps.usuario.models import Usuario, VacunaUsuario
 from apps.vacuna.models import Vacuna
 
 
@@ -24,6 +25,20 @@ class RazaSerializer(ModelSerializer):
     class Meta:
         model = Raza
         fields = ('id', 'nombre')
+
+
+class TipoMascotaSerializer2(ModelSerializer):
+    class Meta:
+        model = TipoMascota
+        fields = ('id', 'nombre')
+
+
+class RazaMascotaSerializer(ModelSerializer):
+    tipo_mascota = TipoMascotaSerializer2(many=False)
+
+    class Meta:
+        model = Raza
+        fields = ('id', 'nombre', 'tipo_mascota')
 
 
 class TipoMascotaSerializer(ModelSerializer):
@@ -74,7 +89,8 @@ class MascotaSerializer(ModelSerializer):
 class ReportarMascotaPremiumSerializer(ModelSerializer):
     class Meta:
         model = MascotaPerdida
-        fields = ('latitud', 'longitud', 'direccion', 'celular', 'observacion', 'mascota')
+        fields = ('id', 'direccion', 'celular', 'observacion', 'mascota')
+        read_only_fields = ('id',)
 
 
 class MascotaPerdidaSerializer(ModelSerializer):
@@ -82,7 +98,7 @@ class MascotaPerdidaSerializer(ModelSerializer):
 
     class Meta:
         model = MascotaPerdida
-        fields = ('id', 'fecha', 'hora', 'latitud', 'longitud', 'direccion', 'celular', 'observacion', 'mascota')
+        fields = ('id', 'direccion', 'celular', 'observacion', 'mascota')
 
 
 class AliadoSerializer(ModelSerializer):
@@ -128,18 +144,23 @@ class CreateMascotaSerializer(ModelSerializer):
     class Meta:
         model = Mascota
         fields = (
-            'dia', 'mes', 'nombre', 'sexo', 'raza', 'edad', 'usuario', 'aseguradora', 'numero_poliza', 'numero_contacto'
+            'dia', 'mes', 'nombre', 'sexo', 'raza', 'edad', 'usuario', 'aseguradora', 'numero_poliza',
+            'numero_contacto', 'esterilizado'
         )
 
 
 class MascotaUserSerializer(ModelSerializer):
-    raza = StringRelatedField(source='raza.nombre')
+    raza = RazaMascotaSerializer(many=False)
     usuario = StringRelatedField(source='usuario.nombre')
     imagen = ImagenMascotasSerializer(many=True)
+    microchip = StringRelatedField(source='mascota_premium.microchip')
+    # id de una mascota perdida en el modelo MascotaPerdida
+    mascota_perdida = StringRelatedField(source='mascota_perdida.id')
 
     class Meta:
         model = Mascota
-        fields = ('id', 'dia', 'mes', 'foto_perfil', 'raza', 'sexo', 'nombre', 'edad', 'usuario', 'imagen')
+        fields = ('id', 'dia', 'mes', 'foto_perfil', 'raza', 'sexo', 'nombre', 'edad', 'usuario', 'imagen',
+                  'esterilizado', 'microchip', 'aseguradora', 'numero_poliza', 'numero_contacto', 'mascota_perdida')
 
 
 class AddVacunaHistorial(ModelSerializer):
@@ -151,6 +172,12 @@ class AddVacunaHistorial(ModelSerializer):
 class HistorialVacunaSerializer(ModelSerializer):
     vacuna = StringRelatedField(source='vacuna.nombre')
 
+    class Meta:
+        model = HistorialVacuna
+        fields = ('vacuna', 'imagen', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion')
+
+
+class GHistorialVacunaSerializer(ModelSerializer):
     class Meta:
         model = HistorialVacuna
         fields = ('vacuna', 'imagen', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion')
@@ -171,6 +198,12 @@ class AddHistorialMedicamento(ModelSerializer):
 class HistorialMedicamentoSerializer(ModelSerializer):
     medicamento = StringRelatedField(source='medicamento.nombre')
 
+    class Meta:
+        model = HistorialMedicamento
+        fields = ('fecha', 'prioridad', 'medicamento', 'dosis', 'observacion')
+
+
+class GHistorialMedicamentoSerializer(ModelSerializer):
     class Meta:
         model = HistorialMedicamento
         fields = ('fecha', 'prioridad', 'medicamento', 'dosis', 'observacion')
@@ -204,3 +237,30 @@ class MascotaPremiumSerializer(ModelSerializer):
     class Meta:
         model = MascotaPremium
         exclude = ('codigoqr',)
+
+
+class CVacunaUsuarioSerializer(ModelSerializer):
+    class Meta:
+        model = VacunaUsuario
+        fields = ('nombre', 'usuario')
+
+
+class VacunaUsuarioSerializer(ModelSerializer):
+    class Meta:
+        model = VacunaUsuario
+        fields = ('nombre',)
+
+
+class GMascotaUserSerializer(ModelSerializer):
+    class Meta:
+        model = Mascota
+        fields = ('sexo', 'nombre', 'raza', 'edad', 'dia', 'mes', 'aseguradora', 'numero_poliza', 'numero_contacto',
+                  'esterilizado')
+
+
+class CiudadSerializer(ModelSerializer):
+    departamento = StringRelatedField(source='departamento.nombre')
+
+    class Meta:
+        model = Ciudad
+        fields = ('nombre', 'departamento',)
