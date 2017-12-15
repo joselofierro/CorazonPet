@@ -31,7 +31,7 @@ class Usuario(models.Model):
     email = models.CharField(max_length=30, blank=False, null=False, unique=True)
     premium = models.BooleanField(default=False)
     contrasena = models.CharField(blank=True, null=False, default="", max_length=100)
-    ciudad = models.ForeignKey(Ciudad, default='', null=True)
+    ciudad = models.ForeignKey(Ciudad, blank=True, null=True)
 
     class Meta:
         permissions = (
