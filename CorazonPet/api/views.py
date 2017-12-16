@@ -1,10 +1,15 @@
 import base64
+import jwt
+from django.contrib import auth
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.template.loader import render_to_string
 from fcm_django.api.rest_framework import FCMDeviceSerializer
 from fcm_django.models import FCMDevice
 from django.core.mail import send_mail
 from rest_framework.decorators import api_view
 from rest_framework.generics import *
+from rest_framework.utils import json
 from rest_framework.views import *
 from api.serializers import *
 from django.core.files.base import ContentFile
@@ -20,7 +25,7 @@ class TipoMascotaAPI(ListAPIView):
 
 
 # API PARA CREAR USUARIO
-class User(CreateAPIView):
+class CreateUser(CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def get_queryset(self):
@@ -454,7 +459,8 @@ class GMascotaUserAPI(APIView):
 
     def get(self, request, pk):
         obj_mascota = self.get_obj_mascota(pk)
-        serializer = MascotaUserSerializer(obj_mascota)
+        serializer = MascotaUserSerializer(obj_mascota, context={'request': request})
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk, format=None):
@@ -602,3 +608,45 @@ def generatevolante(request):
         return Response({'data': 'volante generado'}, status=status.HTTP_200_OK)
     except MascotaPerdida.DoesNotExist:
         return Response({'data': 'no found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# API PARA GENERAR JWT
+class LoginTokenApi(APIView):
+    def post(self, request, *args, **kwargs):
+
+        # si no hay datos
+        if not request.data:
+            return Response({'Error': 'Digita el usuario/Contraseña'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # recibimos el user y el pass del User registrado
+        username = request.data['username']
+        password = request.data['password']
+
+        try:
+            user_obj = User.objects.get(username=username)
+            if user_obj.check_password(password):
+                user_obj.objects.get(username=username, password=password)
+            print(user_obj)
+        except User.DoesNotExist:
+            return Response({'Error': 'Credenciales Invalidas'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # si hay un usuario, generamos el payload
+        if user_obj:
+            # generamos el payload(data)
+            payload = {
+                'id': user_obj.id,
+                'email': user_obj.email
+            }
+
+            # codificamos el payload como una llave
+            jwt_token = {'token': jwt.encode(payload, "SECRET_KEY")}
+
+            # lo volvemos a formato json como una respuesta
+            return HttpResponse(
+                json.dumps(jwt_token), status=status.HTTP_200_OK, content_type="application/json"
+            )
+
+        else:
+            return Response(
+                json.dumps({'Error': 'Credenciales Invalidas'}), status=status.HTTP_400_BAD_REQUEST,
+                content_type="application/json")

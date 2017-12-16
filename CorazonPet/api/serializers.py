@@ -68,7 +68,7 @@ class ImagenMascotasSerializer(ModelSerializer):
 
     class Meta:
         model = ImagenesMascota
-        fields = ('imagen',)
+        fields = ('id', 'imagen',)
 
     def get_foto_url(self, obj):
         # obtenemos el contexto

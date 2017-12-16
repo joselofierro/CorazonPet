@@ -7,7 +7,7 @@ from api.views import *
 urlpatterns = [
 
     url(r'^tipo_mascotas', TipoMascotaAPI.as_view(), name='tipos_mascotas_api'),
-    url(r'^usuarios$', User.as_view(), name='user_api'),
+    url(r'^usuarios$', CreateUser.as_view(), name='user_api'),
     url(r'^usuario/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ListUserByCorreo.as_view(),
         name='user_id_api'),
     url(r'^login_user/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/(?P<contrasena>.*)$', login,
@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^eliminar_foto_mascota/(?P<pk>\d+)/$', eliminar_foto_mascota, name='eliminar_foto_mascota'),
     url(r'^generar_volante$', generatevolante, name='generate_volante_api'),
     url(r'^eliminar_reporte_mascota/(?P<pk>\d+)/$', eliminar_reporte_mascota_perdida, name='eliminar_reporte_api'),
+    url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api')
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)
