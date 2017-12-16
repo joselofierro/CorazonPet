@@ -30,7 +30,7 @@ SECRET_KEY = '+x1*e*agb*v25y!w@eeft#ay)%rf2g@t6)y&3tqjvdmy5b9x%7'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.10.106',
+    '192.168.10.227',
     '.elasticbeanstalk.com',
 ]
 
@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'apps.historial_vacuna',
     'apps.mascota',
     'apps.mascota_perdida',
-    'apps.medicamento',
     'apps.raza',
     'apps.sitio_mapa',
     'apps.tipo_mascota',

@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 from apps.mascota.models import Mascota
-from apps.medicamento.models import Medicamento
 
 
 def upload_location(instance, filename):
@@ -24,7 +23,7 @@ class HistorialMedicamento(models.Model):
     fecha = models.DateField(null=True, blank=True)
     prioridad = models.CharField(max_length=10, blank=False, null=False, choices=Prioridad)
     mascota = models.ForeignKey(Mascota)
-    medicamento = models.ForeignKey(Medicamento)
+    medicamento = models.CharField(max_length=100, blank=False, null=False)
     imagen = models.ImageField(upload_to=upload_location)
     dosis = models.CharField(max_length=15, blank=False, null=False)
     observacion = models.CharField(max_length=200, blank=True, null=False)

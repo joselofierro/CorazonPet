@@ -1,15 +1,15 @@
 import base64
-import jwt
-from django.contrib import auth
+import jwt, json
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from fcm_django.api.rest_framework import FCMDeviceSerializer
 from fcm_django.models import FCMDevice
 from django.core.mail import send_mail
+from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.decorators import api_view
 from rest_framework.generics import *
-from rest_framework.utils import json
 from rest_framework.views import *
 from api.serializers import *
 from django.core.files.base import ContentFile
@@ -154,16 +154,6 @@ class MascotaCalleApi(ListAPIView):
 
 # API PARA LISTAR VACUNAS
 class VacunaApi(ListAPIView):
-    """def post(self, request):
-        if Vacuna.objects.filter(nombre=request.data['nombre']).exists():
-            return Response({'data': 'Vacuna ya existe'}, status=status.HTTP_200_OK)
-        else:
-            vacuna_serializer = VacunaSerializer(data=request.data)
-            if vacuna_serializer.is_valid():
-                vacuna_serializer.save()
-                return Response({'vacuna': vacuna_serializer.data}, status=status.HTTP_201_CREATED)
-            return Response({'error': vacuna_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)"""
-
     serializer_class = VacunaSerializer
 
     def get_queryset(self):
@@ -198,30 +188,22 @@ class ListHistorialVacunaApi(ListAPIView):
         return HistorialVacuna.objects.filter(mascota__id=self.kwargs['pk'])
 
 
-# API PARA LISTAR MEDICAMENTOS
-class MedicamentoApi(ListAPIView):
-    serializer_class = MedicamentoSerializer
-
-    def get_queryset(self):
-        return Medicamento.objects.all().order_by('nombre')
-
-
 # API PARA CREAR MEDICAMENTO A LA MASCOTA EN EL HISTORIAL MEDICO
 class CreateHistorialMedicamento(CreateAPIView):
     serializer_class = AddHistorialMedicamento
+
 
     def post(self, request, *args, **kwargs):
         historial_medicamento = AddHistorialMedicamento(data=request.data)
         if historial_medicamento.is_valid():
             img_64 = request.data['imagen']
-            img_deco = base64.b64decode(img_64)
-
             obj_historial_medicamento = historial_medicamento.save()
-
-            obj_historial_medicamento.imagen = ContentFile(img_deco,
-                                                           name='medicamento_' + obj_historial_medicamento.mascota.nombre + "_" + str(
-                                                               obj_historial_medicamento.mascota.id) + "_" + obj_historial_medicamento.medicamento.nombre + '.jpg')
-            obj_historial_medicamento.save()
+            if img_64 != '':
+                img_deco = base64.b64decode(img_64)
+                obj_historial_medicamento.imagen = ContentFile(img_deco,
+                                                               name='medicamento_' + obj_historial_medicamento.mascota.nombre + "_" + str(
+                                                                   obj_historial_medicamento.mascota.id) + "_" + obj_historial_medicamento.medicamento + '.jpg')
+                obj_historial_medicamento.save()
             return Response({'data': 'Medicamento creado'}, status=status.HTTP_201_CREATED)
         return Response({'error': historial_medicamento.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -231,7 +213,7 @@ class ListHistorialMedicamentoApi(ListAPIView):
     serializer_class = HistorialMedicamentoSerializer
 
     def get_queryset(self):
-        return HistorialMedicamento.objects.filter(mascota__id=self.kwargs['pk'])
+        return HistorialMedicamento.objects.filter(mascota=self.kwargs['pk'])
 
 
 # API PARA CREAR RECORDATORIO
@@ -520,6 +502,7 @@ def eliminar_reporte_mascota_perdida(request, pk):
 
 
 class GHistorialVacunaApi(APIView):
+
     def obj_historial_vacuna(self, pk):
         try:
             return HistorialVacuna.objects.get(id=pk)
@@ -538,6 +521,37 @@ class GHistorialVacunaApi(APIView):
         obj_historial_vacuna = self.obj_historial_vacuna(pk)
         obj_historial_vacuna.delete()
         return Response({'data': 'Historial de vacuna eliminado'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['put'])
+def cambiar_foto_medicamento(request, pk):
+    try:
+        obj_medicamento = HistorialMedicamento.objects.get(id=pk)
+        imagen = base64.b64decode(request.data['imagen'])
+
+        obj_medicamento.imagen = ContentFile(imagen,
+                                             name='imagen_medicamento_' + obj_medicamento.mascota.nombre + '.jpg')
+
+        obj_medicamento.save()
+
+        return Response({'data': 'Imagen actualizada'}, status=status.HTTP_200_OK)
+    except HistorialMedicamento.DoesNotExist:
+        return Response({'error': 'No existe historial'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['put'])
+def cambiar_foto_vacuna(request, pk):
+    try:
+        obj_vacuna = HistorialVacuna.objects.get(id=pk)
+        imagen = base64.b64decode(request.data['imagen'])
+
+        obj_vacuna.imagen = ContentFile(imagen, name='imagen_vacuna_' + obj_vacuna.mascota.nombre + '.jpg')
+
+        obj_vacuna.save()
+
+        return Response({'data': 'Imagen actualizada'}, status=status.HTTP_200_OK)
+    except HistorialVacuna.DoesNotExist:
+        return Response({'error': 'No existe historial'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # API GENERICA PARA ACTUALIZAR Y ELIMINAR MEDICAMENTOS
@@ -610,6 +624,14 @@ def generatevolante(request):
         return Response({'data': 'no found'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (bytes, bytearray)):
+            return obj.decode("ASCII")  # <- or any other encoding of your choice
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)
+
+
 # API PARA GENERAR JWT
 class LoginTokenApi(APIView):
     def post(self, request, *args, **kwargs):
@@ -623,10 +645,12 @@ class LoginTokenApi(APIView):
         password = request.data['password']
 
         try:
+            # preguntamos por el user
             user_obj = User.objects.get(username=username)
+            # chekeamos el password
             if user_obj.check_password(password):
-                user_obj.objects.get(username=username, password=password)
-            print(user_obj)
+                # autentificamos el usuario
+                user_obj = authenticate(username=username, password=password)
         except User.DoesNotExist:
             return Response({'Error': 'Credenciales Invalidas'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -634,19 +658,82 @@ class LoginTokenApi(APIView):
         if user_obj:
             # generamos el payload(data)
             payload = {
-                'id': user_obj.id,
-                'email': user_obj.email
+                "id": user_obj.id,
+                "email": user_obj.email
             }
 
             # codificamos el payload como una llave
             jwt_token = {'token': jwt.encode(payload, "SECRET_KEY")}
+            print(jwt_token)
+
+            print(json.dumps(jwt_token, cls=MyEncoder))
 
             # lo volvemos a formato json como una respuesta
             return HttpResponse(
-                json.dumps(jwt_token), status=status.HTTP_200_OK, content_type="application/json"
+                json.dumps(jwt_token, cls=MyEncoder), status=200, content_type="application/json"
             )
 
         else:
             return Response(
                 json.dumps({'Error': 'Credenciales Invalidas'}), status=status.HTTP_400_BAD_REQUEST,
                 content_type="application/json")
+
+
+class TokenAuthentication(BaseAuthentication):
+    model = None
+
+    def get_model(self):
+        return User
+
+    def authenticate(self, request):
+        auth = get_authorization_header(request).split()
+        print(auth)
+        if not auth or auth[0].lower() != b'token':
+            return None
+
+        if len(auth) == 1:
+            msg = 'Cabezera de token invalida'
+            raise exceptions.AuthenticationFailed(msg)
+
+        elif len(auth) > 2:
+            msg = 'Cabezera de token invalida'
+            raise exceptions.AuthenticationFailed(msg)
+
+        try:
+            token = auth[1]
+            if token == "null":
+                msg = "Token nulo no almacenado"
+                raise exceptions.AuthenticationFailed(msg)
+
+        except UnicodeError:
+            msg = "Token invalido, No debe contener caracteres invalidos"
+            raise exceptions.AuthenticationFailed(msg)
+
+        return self.authenticate_credentials(token)
+
+    def authenticate_credentials(self, token):
+        model = self.get_model()
+        payload = jwt.decode(token, "SECRET_KEY")
+        id_user = payload['id']
+        email = payload['email']
+        msg = {'Error': "Token mismatch", 'status': "401"}
+        try:
+
+            user = User.objects.get(
+                email=email,
+                id=id_user,
+                is_active=True
+            )
+
+            if not user.token['token'] == token:
+                raise exceptions.AuthenticationFailed(msg)
+
+        except jwt.ExpiredSignature or jwt.DecodeError or jwt.InvalidTokenError:
+            return HttpResponse({'Error': "Token is invalid"}, status="403")
+        except User.DoesNotExist:
+            return HttpResponse({'Error': "Internal server error"}, status="500")
+
+        return user, token
+
+    def authenticate_header(self, request):
+        return 'Token'

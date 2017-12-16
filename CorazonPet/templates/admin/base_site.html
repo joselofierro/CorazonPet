@@ -1,37 +1,42 @@
 {% extends "admin/base.html" %}
-
+{% load staticfiles %}
 {% block title %}{{ title }} | Corazón Pet{% endblock %}
 {% block extrastyle %}
     <style type="text/css">
         #branding h1, #branding h1 a:link, #branding h1 a:visited {
-            color: #ffffff;
-        }
-        
-        div#header{
-            background-color: #eccc21;
+            #color: #ffffff;
+            color: #ec5461;
         }
 
-        .module h2, .module caption, .inline-group h2{
-            background-color: rgba(103,58,183,0.73);
+        div#header {
+            background-color: rgba(243, 255, 184, 0.03);
+            -webkit-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.19);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.19);
         }
 
-        div.breadcrumbs{
-            background-color: rgba(103,58,183,0.73);
+        .module h2, .module caption, .inline-group h2 {
+            background-color: #56c3f9;
         }
 
-        .button, input[type=submit], input[type=button], .submit-row input, a.button, .button.default, input[type=submit].default, .submit-row input.default{
-            background-color: rgba(236,204,33,0.88);
+        div.breadcrumbs {
+            background-color: #56c3f9;
+        }
+
+        .button, input[type=submit], input[type=button], .submit-row input, a.button, .button.default, input[type=submit].default, .submit-row input.default {
+            background-color: rgba(236, 204, 33, 0.88);
 
         }
 
-        input[type=submit]:hover,input[type=submit].default:hover{
+        input[type=submit]:hover, input[type=submit].default:hover {
             background-color: #ecbf09;
         }
-    
+
     </style>
 {% endblock %}
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">Administración CorazónPet</a></h1>
+    <!--<h1 id="site-name"><a href="">Administración CorazónPet</a></h1>-->
+    <a href="{% url 'admin:index' %}"><img src="{% static 'imagenes/logotipo.png' %}"></a>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

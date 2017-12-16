@@ -11,7 +11,6 @@ from apps.media_mascota.models import ImagenesMascota
 from apps.mascota.models import Mascota
 from apps.mascota_calle.models import MascotaCalle
 from apps.mascota_perdida.models import MascotaPerdida
-from apps.medicamento.models import Medicamento
 from apps.raza.models import Raza
 from apps.recordatorio.models import Recordatorio, IdentificadorRecordatorio
 from apps.sitio_mapa.models import SitioMapa
@@ -183,12 +182,6 @@ class GHistorialVacunaSerializer(ModelSerializer):
         fields = ('vacuna', 'imagen', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion')
 
 
-class MedicamentoSerializer(ModelSerializer):
-    class Meta:
-        model = Medicamento
-        fields = ('id', 'nombre',)
-
-
 class AddHistorialMedicamento(ModelSerializer):
     class Meta:
         model = HistorialMedicamento
@@ -196,11 +189,9 @@ class AddHistorialMedicamento(ModelSerializer):
 
 
 class HistorialMedicamentoSerializer(ModelSerializer):
-    medicamento = StringRelatedField(source='medicamento.nombre')
-
     class Meta:
         model = HistorialMedicamento
-        fields = ('fecha', 'prioridad', 'medicamento', 'dosis', 'observacion')
+        fields = ('id', 'fecha', 'prioridad', 'medicamento', 'dosis', 'observacion', 'imagen')
 
 
 class GHistorialMedicamentoSerializer(ModelSerializer):
@@ -248,7 +239,7 @@ class CVacunaUsuarioSerializer(ModelSerializer):
 class VacunaUsuarioSerializer(ModelSerializer):
     class Meta:
         model = VacunaUsuario
-        fields = ('nombre',)
+        fields = ('id', 'nombre',)
 
 
 class GMascotaUserSerializer(ModelSerializer):

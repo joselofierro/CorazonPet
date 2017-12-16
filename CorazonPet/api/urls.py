@@ -20,7 +20,6 @@ urlpatterns = [
     url(r'^vacunas$', VacunaApi.as_view(), name='vacuna_api'),
     url(r'^agregar_vacuna_historial', CreateHistorialVacuna.as_view(), name='add_historial_vacuna'),
     url(r'^historial_vacuna/(?P<pk>\d+)/$', ListHistorialVacunaApi.as_view(), name='historial_vacuna_api'),
-    url(r'^medicamentos', MedicamentoApi.as_view(), name='medicamento_api'),
     url(r'^agregar_medicamento_historial', CreateHistorialMedicamento.as_view(), name='add_historial_medicamento'),
     url(r'^historial_medicamento/(?P<pk>\d+)/$', ListHistorialMedicamentoApi.as_view(), name='historial_medico_api'),
     url(r'^agregar_recordatorio', CreateRecordatorio.as_view(), name='agregar_recordatorio_api'),
@@ -43,12 +42,15 @@ urlpatterns = [
     url(r'^pd_mascota_user/(?P<pk>\d+)/$', GMascotaUserAPI.as_view(), name='g_actualizar_mascota_user'),
     url(r'^pd_vacuna_historial/(?P<pk>\d+)/$', GHistorialVacunaApi.as_view(), name='g_vacuna_historial'),
     url(r'^pd_medicamento_historial/(?P<pk>\d+)/$', GHistorialMedicamentoApi.as_view(), name='g_medicamento_historial'),
+    url(r'^cambiar_foto$', cambio_foto_mascota, name='cambio_foto_mascota'),
     url(r'^pd_recordatorio/(?P<pk>\d+)/$', GRecordatorioApi.as_view(), name='g_recordatorio'),
     url(r'^ciudades/$', CiudadesApi.as_view(), name='ciudades_api'),
     url(r'^eliminar_foto_mascota/(?P<pk>\d+)/$', eliminar_foto_mascota, name='eliminar_foto_mascota'),
     url(r'^generar_volante$', generatevolante, name='generate_volante_api'),
     url(r'^eliminar_reporte_mascota/(?P<pk>\d+)/$', eliminar_reporte_mascota_perdida, name='eliminar_reporte_api'),
-    url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api')
+    url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
+    url(r'^cambiar_foto_medicamento/(?P<pk>\d+)/$', cambiar_foto_medicamento, name='cambiar_foto_medicamento'),
+    url(r'^cambiar_foto_vacuna/(?P<pk>\d+)/$', cambiar_foto_vacuna, name='cambiar_foto_vacuna'),
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)
