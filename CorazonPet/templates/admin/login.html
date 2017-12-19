@@ -1,19 +1,29 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/base.html" %}
 {% load i18n static %}
 
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
 {{ form.media }}
+    <style type="text/css">
+        div#header{
+            background: #ffffff;
+        }
+    </style>
 {% endblock %}
 
-{% block bodyclass %}{{ block.super }} login{% endblock %}
+{% block bodyclass %}{{ block.super }}login{% endblock %}
 
-{% block usertools %}{% endblock %}
+{% block usertools %}
+{% endblock %}
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
+    <img src="{% static 'imagenes/cover-login0.png' %}" alt="CorazónPet">
+{% endblock %}
 
-{% block content_title %}{% endblock %}
+{% block content_title %}
+{% endblock %}
 
-{% block breadcrumbs %}{% endblock %}
+{% block breadcrumbs %}
+{% endblock %}
 
 {% block content %}
 {% if form.errors and not form.non_field_errors %}
@@ -40,7 +50,6 @@
 {% endblocktrans %}
 </p>
 {% endif %}
-
 <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
   <div class="form-row">
     {{ form.username.errors }}

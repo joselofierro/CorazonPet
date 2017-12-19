@@ -133,6 +133,12 @@ class MascotaCalleSerializer(ModelSerializer):
         fields = ('id', 'imagen', 'direccion', 'observacion')
 
 
+class CreateVacunaSerializer(ModelSerializer):
+    class Meta:
+        model = Vacuna
+        fields = ('id',)
+
+
 class VacunaSerializer(ModelSerializer):
     class Meta:
         model = Vacuna
@@ -162,24 +168,32 @@ class MascotaUserSerializer(ModelSerializer):
                   'esterilizado', 'microchip', 'aseguradora', 'numero_poliza', 'numero_contacto', 'mascota_perdida')
 
 
+class VacunaUsuarioSerializer(ModelSerializer):
+    class Meta:
+        model = VacunaUsuario
+        fields = ('id', 'nombre',)
+
+
 class AddVacunaHistorial(ModelSerializer):
     class Meta:
         model = HistorialVacuna
-        fields = ('mascota', 'vacuna', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion')
+        fields = (
+            'mascota', 'vacuna', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion', 'vacuna_usuario')
 
 
 class HistorialVacunaSerializer(ModelSerializer):
-    vacuna = StringRelatedField(source='vacuna.nombre')
+    vacuna = VacunaSerializer(many=True)
+    vacuna_usuario = VacunaUsuarioSerializer(many=True)
 
     class Meta:
         model = HistorialVacuna
-        fields = ('vacuna', 'imagen', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion')
+        fields = ('id', 'vacuna', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion', 'vacuna_usuario')
 
 
 class GHistorialVacunaSerializer(ModelSerializer):
     class Meta:
         model = HistorialVacuna
-        fields = ('vacuna', 'imagen', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion')
+        fields = ('vacuna', 'prioridad', 'fecha_aplicacion', 'proxima_dosis', 'observacion', 'vacuna_usuario')
 
 
 class AddHistorialMedicamento(ModelSerializer):
@@ -234,12 +248,6 @@ class CVacunaUsuarioSerializer(ModelSerializer):
     class Meta:
         model = VacunaUsuario
         fields = ('nombre', 'usuario')
-
-
-class VacunaUsuarioSerializer(ModelSerializer):
-    class Meta:
-        model = VacunaUsuario
-        fields = ('id', 'nombre',)
 
 
 class GMascotaUserSerializer(ModelSerializer):

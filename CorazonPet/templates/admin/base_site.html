@@ -24,7 +24,7 @@
         }
 
         .button, input[type=submit], input[type=button], .submit-row input, a.button, .button.default, input[type=submit].default, .submit-row input.default {
-            background-color: rgba(236, 204, 33, 0.88);
+            background: linear-gradient(45deg,rgba(249,212,35,1)0%,rgba(250,222,86,1)20%,rgba(252,145,58,1)70%,rgba(252,173,109,1)100%)
 
         }
 
@@ -35,7 +35,6 @@
     </style>
 {% endblock %}
 {% block branding %}
-    <!--<h1 id="site-name"><a href="">Administración CorazónPet</a></h1>-->
     <a href="{% url 'admin:index' %}"><img src="{% static 'imagenes/logotipo.png' %}"></a>
 {% endblock %}
 

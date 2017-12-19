@@ -18,9 +18,10 @@
 <div id="container">
     {% if not is_popup %}
     <!-- Header -->
-    <div id="header" style="height: ">
+    <div id="header">
         <div id="branding">
-            {% block branding %}{% endblock %}
+            {% block branding %}
+            {% endblock %}
         </div>
         {% block usertools %}
         {% if has_permission %}

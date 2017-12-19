@@ -5,7 +5,6 @@ from rest_framework_jwt.views import obtain_jwt_token
 from api.views import *
 
 urlpatterns = [
-
     url(r'^tipo_mascotas', TipoMascotaAPI.as_view(), name='tipos_mascotas_api'),
     url(r'^usuarios$', CreateUser.as_view(), name='user_api'),
     url(r'^usuario/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ListUserByCorreo.as_view(),
@@ -50,7 +49,7 @@ urlpatterns = [
     url(r'^eliminar_reporte_mascota/(?P<pk>\d+)/$', eliminar_reporte_mascota_perdida, name='eliminar_reporte_api'),
     url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
     url(r'^cambiar_foto_medicamento/(?P<pk>\d+)/$', cambiar_foto_medicamento, name='cambiar_foto_medicamento'),
-    url(r'^cambiar_foto_vacuna/(?P<pk>\d+)/$', cambiar_foto_vacuna, name='cambiar_foto_vacuna'),
+    url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna')
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)

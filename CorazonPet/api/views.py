@@ -164,21 +164,6 @@ class VacunaApi(ListAPIView):
 class CreateHistorialVacuna(CreateAPIView):
     serializer_class = AddVacunaHistorial
 
-    def post(self, request, *args, **kwargs):
-        historial_vacuna_serializer = AddVacunaHistorial(data=request.data)
-        if historial_vacuna_serializer.is_valid():
-            img_64 = request.data['imagen']
-            img_deco = base64.b64decode(img_64)
-
-            obj_history_vacuna = historial_vacuna_serializer.save()
-            obj_history_vacuna.imagen = ContentFile(img_deco,
-                                                    name='vacuna_' + obj_history_vacuna.mascota.nombre + "_" + str(
-                                                        obj_history_vacuna.mascota.id) + "_" + obj_history_vacuna.vacuna.nombre + '.jpg')
-            obj_history_vacuna.save()
-
-            return Response({'data': 'Vacuna creada'}, status=status.HTTP_201_CREATED)
-        return Response({'error': historial_vacuna_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
 
 # Listado de historias de vacunas por el id de la mascota
 class ListHistorialVacunaApi(ListAPIView):
@@ -191,7 +176,6 @@ class ListHistorialVacunaApi(ListAPIView):
 # API PARA CREAR MEDICAMENTO A LA MASCOTA EN EL HISTORIAL MEDICO
 class CreateHistorialMedicamento(CreateAPIView):
     serializer_class = AddHistorialMedicamento
-
 
     def post(self, request, *args, **kwargs):
         historial_medicamento = AddHistorialMedicamento(data=request.data)
@@ -431,6 +415,18 @@ class GVacunaUsuarioAPI(APIView):
         return Response({'data': 'Vacuna eliminada'}, status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['POST'])
+def delete_vacuna_usuario(request):
+    if request.method == 'POST':
+        try:
+            ids = request.data['ids']
+            for ind_id in ids:
+                VacunaUsuario.objects.get(id=ind_id).delete()
+            return Response({'data': "Vacuna usuario eliminada"}, status=status.HTTP_200_OK)
+        except VacunaUsuario.DoesNotExist:
+            return Response({'error': 'No se ha podido eliminar la vacuna'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # API GENERICA PARA ACTUALIZAR Y ELIMINAR UNA MASCOTA
 class GMascotaUserAPI(APIView):
     def get_obj_mascota(self, pk):
@@ -502,7 +498,6 @@ def eliminar_reporte_mascota_perdida(request, pk):
 
 
 class GHistorialVacunaApi(APIView):
-
     def obj_historial_vacuna(self, pk):
         try:
             return HistorialVacuna.objects.get(id=pk)
@@ -536,21 +531,6 @@ def cambiar_foto_medicamento(request, pk):
 
         return Response({'data': 'Imagen actualizada'}, status=status.HTTP_200_OK)
     except HistorialMedicamento.DoesNotExist:
-        return Response({'error': 'No existe historial'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['put'])
-def cambiar_foto_vacuna(request, pk):
-    try:
-        obj_vacuna = HistorialVacuna.objects.get(id=pk)
-        imagen = base64.b64decode(request.data['imagen'])
-
-        obj_vacuna.imagen = ContentFile(imagen, name='imagen_vacuna_' + obj_vacuna.mascota.nombre + '.jpg')
-
-        obj_vacuna.save()
-
-        return Response({'data': 'Imagen actualizada'}, status=status.HTTP_200_OK)
-    except HistorialVacuna.DoesNotExist:
         return Response({'error': 'No existe historial'}, status=status.HTTP_400_BAD_REQUEST)
 
 
