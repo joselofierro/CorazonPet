@@ -226,6 +226,12 @@ class CreateIdentifierRecordatorioSerializer(ModelSerializer):
         fields = '__all__'
 
 
+"""class IdentificadoresRecordatorioSerializer(ModelSerializer):
+    class Meta:
+        model = IdentificadorRecordatorio
+        fields = ('id',)"""
+
+
 class RecordatorioSerializer(ModelSerializer):
     class Meta:
         model = Recordatorio

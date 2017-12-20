@@ -13,6 +13,7 @@
             -webkit-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.19);
             box-shadow: 0 5px 8px rgba(0, 0, 0, 0.19);
+
         }
 
         .module h2, .module caption, .inline-group h2 {
@@ -24,18 +25,40 @@
         }
 
         .button, input[type=submit], input[type=button], .submit-row input, a.button, .button.default, input[type=submit].default, .submit-row input.default {
-            background: linear-gradient(45deg,rgba(249,212,35,1)0%,rgba(250,222,86,1)20%,rgba(252,145,58,1)70%,rgba(252,173,109,1)100%)
+            background: linear-gradient(45deg, rgba(249, 212, 35, 1) 0%, rgba(250, 222, 86, 1) 20%, rgba(252, 145, 58, 1) 70%, rgba(252, 173, 109, 1) 100%)
 
         }
 
         input[type=submit]:hover, input[type=submit].default:hover {
-            background-color: #ecbf09;
+            background: linear-gradient(45deg, rgba(255, 175, 75, 1) 0%, rgba(255, 175, 75, 1) 41%, rgba(255, 146, 10, 1) 100%);
         }
+
+        img.img-logo {
+            width: 27%;
+            display: inline-block;
+        }
+
+        #user-tools a {
+            border: none;
+        }
+
+        #header{
+            color: dimgrey!important;
+        }
+
+        #header a:link, #header a:visited {
+            color: dimgrey;
+        }
+
 
     </style>
 {% endblock %}
 {% block branding %}
-    <a href="{% url 'admin:index' %}"><img src="{% static 'imagenes/logotipo.png' %}"></a>
+    <a href="{% url 'admin:index' %}">
+        <img class="img-logo" src="{% static 'imagenes/logotipo.png' %}">
+    </a>
 {% endblock %}
+
+
 
 {% block nav-global %}{% endblock %}

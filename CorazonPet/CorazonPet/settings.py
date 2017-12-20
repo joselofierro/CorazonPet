@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'apps.notificacion',
     'apps.departamento',
     'apps.ciudad',
+    'apps.estadistica',
     'storages',
     'rest_framework',
     'rest_framework_jwt',

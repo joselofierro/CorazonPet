@@ -37,7 +37,7 @@ class Recordatorio(models.Model):
 
 
 class IdentificadorRecordatorio(models.Model):
-    recordatorio = models.ForeignKey(Recordatorio)
+    recordatorio = models.ForeignKey(Recordatorio, related_name='recordatorio_identificador')
     identificador = models.IntegerField(blank=False, null=False, default=1)
 
     def __str__(self):

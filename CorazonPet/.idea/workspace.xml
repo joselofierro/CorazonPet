@@ -2,26 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24007247-9dc2-4ae4-9144-a450a60c4e0d" name="Default" comment="Error al">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/imagenes/cover-login0.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/imagenes/cover-login@2x.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/historial_vacuna/migrations/0008_auto_20171218_1108.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/historial_vacuna/migrations/0009_historialvacuna_vacuna_usuario.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/historial_vacuna/migrations/0011_auto_20171219_0919.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/historial_vacuna/migrations/0012_auto_20171219_0922.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/historial_vacuna/migrations/0013_auto_20171219_0931.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/usuario/migrations/0010_auto_20171219_0922.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/usuario/migrations/0011_auto_20171219_0925.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/apps/usuario/migrations/0012_auto_20171219_0927.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/base/login2.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/admin/mascota/change_list.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/admin/mascota/change_list_results.html" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/fonts/BalooBhaijaan-Regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/imagenes/icono-cerrarSesion.svg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/static/imagenes/logotipo@2x.png" afterPath="$PROJECT_DIR$/static/imagenes/logotipo2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/static/imagenes/logotipo@3x.png" afterPath="$PROJECT_DIR$/static/imagenes/logotipo3x.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/juliofierro.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/juliofierro.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CorazonPet/settings.py" afterPath="$PROJECT_DIR$/CorazonPet/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/serializers.py" afterPath="$PROJECT_DIR$/api/serializers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/urls.py" afterPath="$PROJECT_DIR$/api/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/historial_vacuna/admin.py" afterPath="$PROJECT_DIR$/apps/historial_vacuna/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/historial_vacuna/models.py" afterPath="$PROJECT_DIR$/apps/historial_vacuna/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/recordatorio/models.py" afterPath="$PROJECT_DIR$/apps/recordatorio/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/admin/base.html" afterPath="$PROJECT_DIR$/templates/admin/base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/admin/base_site.html" afterPath="$PROJECT_DIR$/templates/admin/base_site.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/admin/login.html" afterPath="$PROJECT_DIR$/templates/admin/login.html" />
@@ -41,11 +30,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="192" column="22" lean-forward="true" selection-start-line="192" selection-start-column="22" selection-end-line="192" selection-end-column="22" />
+            <state relative-caret-position="209">
+              <caret line="237" column="26" lean-forward="true" selection-start-line="237" selection-start-column="26" selection-end-line="237" selection-end-column="26" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -53,11 +42,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CorazonPet/urls.py">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/recordatorio/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="23" column="56" lean-forward="true" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
+            <state relative-caret-position="532">
+              <caret line="39" column="40" lean-forward="false" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/mascota_premium/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="16" column="61" lean-forward="false" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="193">
+              <caret line="26" column="25" lean-forward="false" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -66,42 +75,10 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="419" column="0" lean-forward="false" selection-start-line="419" selection-start-column="0" selection-end-line="419" selection-end-column="0" />
+            <state relative-caret-position="193">
+              <caret line="214" column="36" lean-forward="false" selection-start-line="214" selection-start-column="36" selection-end-line="214" selection-end-column="36" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="base_site.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/admin/base_site.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/admin/base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/admin/login.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="56" lean-forward="false" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
-              <folding>
-                <element signature="e#1944#1950#1#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -182,9 +159,7 @@
         <option value="$PROJECT_DIR$/apps/medicamento/admin.py" />
         <option value="$PROJECT_DIR$/apps/historial_medicamento/migrations/0003_auto_20171127_1052.py" />
         <option value="$PROJECT_DIR$/apps/historial_medicamento/migrations/0001_initial.py" />
-        <option value="$PROJECT_DIR$/CorazonPet/settings.py" />
         <option value="$PROJECT_DIR$/api/urls.py" />
-        <option value="$PROJECT_DIR$/api/serializers.py" />
         <option value="$PROJECT_DIR$/apps/historial_vacuna/admin.py" />
         <option value="$PROJECT_DIR$/apps/usuario/models.py" />
         <option value="$PROJECT_DIR$/apps/historial_vacuna/models.py" />
@@ -193,9 +168,12 @@
         <option value="$PROJECT_DIR$/templates/admin/login2.html" />
         <option value="$PROJECT_DIR$/templates/base/login2.html" />
         <option value="$PROJECT_DIR$/CorazonPet/urls.py" />
+        <option value="$PROJECT_DIR$/templates/admin/login.html" />
         <option value="$PROJECT_DIR$/templates/admin/base.html" />
         <option value="$PROJECT_DIR$/templates/admin/base_site.html" />
-        <option value="$PROJECT_DIR$/templates/admin/login.html" />
+        <option value="$PROJECT_DIR$/CorazonPet/settings.py" />
+        <option value="$PROJECT_DIR$/apps/recordatorio/models.py" />
+        <option value="$PROJECT_DIR$/api/serializers.py" />
       </list>
     </option>
   </component>
@@ -206,8 +184,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="x" value="1920" />
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -236,11 +215,28 @@
             <path>
               <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
               <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
               <item name="apps" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
               <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
+              <item name="apps" type="462c0819:PsiDirectoryNode" />
+              <item name="mascota_premium" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
+              <item name="apps" type="462c0819:PsiDirectoryNode" />
+              <item name="recordatorio" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
               <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -251,19 +247,7 @@
             <path>
               <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
               <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="imagenes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CorazonPet" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="admin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CorazonPet" type="b2602c69:ProjectViewProjectNode" />
@@ -304,6 +288,7 @@
       <recent name="$PROJECT_DIR$/templates/base" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/fonts" />
       <recent name="$PROJECT_DIR$/static/imagenes" />
       <recent name="$PROJECT_DIR$/templates/admin" />
       <recent name="$PROJECT_DIR$/templates/mail_templates" />
@@ -524,21 +509,22 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="1920" y="0" width="1680" height="1050" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31808943" sideWeight="0.45846644" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36792454" sideWeight="0.50793654" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.53476983" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24390244" sideWeight="0.5242626" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31808943" sideWeight="0.5415335" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15388711" sideWeight="0.49462366" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="manage.py@CorazonPet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3567073" sideWeight="0.4968051" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24318658" sideWeight="0.5242626" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38679245" sideWeight="0.5415335" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17643468" sideWeight="0.49462366" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="manage.py@CorazonPet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36792454" sideWeight="0.4920635" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21033014" sideWeight="0.50537634" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22865854" sideWeight="0.4946752" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22851153" sideWeight="0.4920635" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -621,88 +607,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/mascota_perdida/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/rest_framework_jwt/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/rest_framework_jwt/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="79" column="32" lean-forward="false" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base/base.html" />
-    <entry file="file://$PROJECT_DIR$/apps/departamento/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="12" lean-forward="true" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/django/contrib/auth/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12">
-          <caret line="298" column="6" lean-forward="false" selection-start-line="298" selection-start-column="6" selection-end-line="298" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mascota/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="13" column="6" lean-forward="false" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#28#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/usuario/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/media_mascota/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="12" column="38" lean-forward="false" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#28#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/django/contrib/auth/base_user.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="107" column="8" lean-forward="false" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/rest_framework/utils/json.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Caches/PyCharm2017.2/python_stubs/1608580408/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="244">
@@ -732,16 +636,6 @@
         <state relative-caret-position="60">
           <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mascota_premium/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="16" column="61" lean-forward="false" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#22#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -825,11 +719,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/imagenes/logotipo.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/django/templatetags/static.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1026">
@@ -837,14 +726,6 @@
           <folding>
             <element signature="e#0#27#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CorazonPet/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="19" lean-forward="false" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -881,14 +762,6 @@
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mascota_perdida/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="14" column="73" lean-forward="false" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -958,37 +831,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="41" column="58" lean-forward="false" selection-start-line="41" selection-start-column="58" selection-end-line="41" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CorazonPet/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="23" column="56" lean-forward="true" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/usuario/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
           <caret line="52" column="6" lean-forward="false" selection-start-line="52" selection-start-column="6" selection-end-line="52" selection-end-column="6" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/serializers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="192" column="22" lean-forward="true" selection-start-line="192" selection-start-column="22" selection-end-line="192" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#55#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1000,38 +847,173 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/views.py">
+    <entry file="file://$PROJECT_DIR$/static/imagenes/cover-login@2x.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/imagenes/cover-login0.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/imagenes/logotipo2x.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/imagenes/logotipo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CorazonPet/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="419" column="0" lean-forward="false" selection-start-line="419" selection-start-column="0" selection-end-line="419" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="285">
+          <caret line="23" column="56" lean-forward="true" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/admin/base_site.html">
+    <entry file="file://$PROJECT_DIR$/static/imagenes/icono-cerrarSesion.svg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/django/template/library.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="29" column="8" lean-forward="false" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../Entornos/VenvCorazonPet/lib/python3.6/site-packages/django/templatetags/i18n.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="327" column="4" lean-forward="false" selection-start-line="327" selection-start-column="4" selection-end-line="327" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="605">
+          <caret line="47" column="39" lean-forward="false" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
+          <folding>
+            <element signature="n#style#0;n#a#1;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#img#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/admin/base_site.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mascota/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CorazonPet/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="65" column="23" lean-forward="false" selection-start-line="65" selection-start-column="23" selection-end-line="65" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="56" lean-forward="false" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
+        <state relative-caret-position="1170">
+          <caret line="78" column="26" lean-forward="false" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/estadistica/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="26" column="25" lean-forward="false" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/recordatorio/migrations/0009_auto_20171220_1441.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/recordatorio/migrations/0008_auto_20171204_1813.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="214" column="36" lean-forward="false" selection-start-line="214" selection-start-column="36" selection-end-line="214" selection-end-column="36" />
           <folding>
-            <element signature="e#1944#1950#1#HTML" expanded="true" />
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mascota_perdida/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="14" column="73" lean-forward="false" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mascota_premium/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="16" column="61" lean-forward="false" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/recordatorio/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="39" column="40" lean-forward="false" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="237" column="26" lean-forward="true" selection-start-line="237" selection-start-column="26" selection-end-line="237" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
