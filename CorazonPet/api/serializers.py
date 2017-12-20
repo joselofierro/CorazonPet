@@ -1,5 +1,5 @@
 from rest_framework.fields import SerializerMethodField
-from rest_framework.relations import StringRelatedField
+from rest_framework.relations import StringRelatedField, PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from apps.aliado.models import Aliado
@@ -233,9 +233,12 @@ class CreateIdentifierRecordatorioSerializer(ModelSerializer):
 
 
 class RecordatorioSerializer(ModelSerializer):
+    identificadores = PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = Recordatorio
-        fields = '__all__'
+        fields = ('id', 'mascota', 'categoria', 'actividad', 'fecha', 'hora', 'lunes', 'martes', 'miercoles', 'jueves',
+                  'viernes', 'sabado', 'domingo', 'observacion', 'completado', 'identificadores')
 
 
 class MediaMascotaSerializer(ModelSerializer):
