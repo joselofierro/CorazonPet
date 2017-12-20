@@ -41,4 +41,4 @@ class IdentificadorRecordatorio(models.Model):
     identificador = models.IntegerField(blank=False, null=False, default=1)
 
     def __str__(self):
-        return '{}_{}'.format(self.recordatorio.actividad, self.identificador)
+        return '{}'.format(self.identificador)

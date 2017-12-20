@@ -233,7 +233,7 @@ class CreateIdentifierRecordatorioSerializer(ModelSerializer):
 
 
 class RecordatorioSerializer(ModelSerializer):
-    identificadores = PrimaryKeyRelatedField(many=True, read_only=True)
+    identificadores = StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Recordatorio
