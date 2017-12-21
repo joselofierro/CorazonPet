@@ -8,12 +8,15 @@ from fcm_django.api.rest_framework import FCMDeviceSerializer
 from fcm_django.models import FCMDevice
 from django.core.mail import send_mail
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
-from rest_framework.decorators import api_view
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.generics import *
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import *
 from api.serializers import *
 from django.core.files.base import ContentFile
 from django.contrib.auth.hashers import check_password, make_password
+from rest_framework.authentication import TokenAuthentication
 
 
 # API con el listado de tipos de mascota y su respectiva razas
@@ -22,6 +25,27 @@ class TipoMascotaAPI(ListAPIView):
 
     def get_queryset(self):
         return TipoMascota.objects.all().order_by('nombre')
+
+
+@api_view(['post'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def crear_raza(request):
+    # recorremos el json que viene del post, una vez terminado el ciclo respondemos con un 200
+    for mascota in request.data:
+        serializer = CreateManyRazasSerializer(data=mascota)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'data': 'razas creada'}, status=status.HTTP_200_OK)
+
+
+class ListadoMascotaApi(ListAPIView):
+    serializer_class = RazaSerializer
+
+    def get_queryset(self):
+        return Raza.objects.filter(tipo_mascota=self.kwargs['id']).order_by('nombre')
 
 
 # API PARA CREAR USUARIO
@@ -40,20 +64,32 @@ class CreateUser(CreateAPIView):
         except Usuario.DoesNotExist:
             usuario_serializer = CreateUserSerializer(data=request.data)
             if usuario_serializer.is_valid():
-                if 'contrasena' in request.data:
-                    contrasena = request.data['contrasena']
-                    if contrasena != "":
-                        contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
-                        usuario_obj = usuario_serializer.save()
-                        usuario_obj.contrasena = contrasena_cifrada
-                        usuario_obj.save()
-                        return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
-                    else:
-                        usuario_serializer.save()
-                        return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
-                else:
-                    usuario_serializer.save()
-                    return Response(usuario_serializer.data, status=status.HTTP_201_CREATED)
+                # Crear el usuario Django (User)
+                usuario = User.objects.create(
+                    first_name=request.data['nombre'],
+                    last_name=request.data['apellido'],
+                    username=request.data['email'],
+                    email=request.data['email'])
+
+                # Creamos el token
+                token = Token.objects.create(user=usuario)
+
+                # Guardamos el usuario
+                usuario_obj = usuario_serializer.save()
+                usuario_obj.user_token = usuario
+
+                # Guardamos contraseña encriptada
+                contrasena = request.data['contrasena']
+                if contrasena != "":
+                    contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
+                    usuario_obj.contrasena = contrasena_cifrada
+
+                usuario_obj.save()
+                usuario_serializer = CreateUserSerializer(usuario_obj)
+                json_serializer = usuario_serializer.data
+                json_serializer.pop('user_token')
+                json_serializer['token'] = token.key
+                return Response(json_serializer, status=status.HTTP_201_CREATED)
             else:
                 return Response(usuario_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -82,6 +118,9 @@ class ListUserByCorreo(APIView):
 
 # API PARA REPORTAR MASCOTAS PERDIDAS Y LISTAR MASCOTAS PERDIDAS
 class PetLostApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         mascota_serializer = ReportarMascotaPremiumSerializer(data=request.data)
         if mascota_serializer.is_valid():
@@ -129,6 +168,8 @@ class SitiosApi(ListAPIView):
 # API PARA REPORTAR MASCOTA PERDIDA
 class CreateMascotaCalleApi(CreateAPIView):
     serializer_class = CreateMascotaCalleSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         mascota_calle = CreateMascotaCalleSerializer(data=request.data)
@@ -163,6 +204,8 @@ class VacunaApi(ListAPIView):
 # API PARA CREAR VACUNA A LA MASCOTA EN HISTORIAL VACUNA
 class CreateHistorialVacuna(CreateAPIView):
     serializer_class = AddVacunaHistorial
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 # Listado de historias de vacunas por el id de la mascota
@@ -176,6 +219,8 @@ class ListHistorialVacunaApi(ListAPIView):
 # API PARA CREAR MEDICAMENTO A LA MASCOTA EN EL HISTORIAL MEDICO
 class CreateHistorialMedicamento(CreateAPIView):
     serializer_class = AddHistorialMedicamento
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         historial_medicamento = AddHistorialMedicamento(data=request.data)
@@ -203,11 +248,15 @@ class ListHistorialMedicamentoApi(ListAPIView):
 # API PARA CREAR RECORDATORIO
 class CreateRecordatorio(CreateAPIView):
     serializer_class = CreateRecordatorioSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 # API PARA RELACIONAR LOS IDENTIFICADORES DE LOS RECORDATORIOS
 class CreateIdentifierRecordatorio(CreateAPIView):
     serializer_class = CreateIdentifierRecordatorioSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 # listado de recordatorio por el id de la mascota
@@ -221,6 +270,8 @@ class ListRecordatorioApi(ListAPIView):
 # API PARA CREAR MASCOTAS
 class CreateMascotaApi(CreateAPIView):
     serializer_class = CreateMascotaSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         # recibimos el json
@@ -253,6 +304,8 @@ class MascotaUserApi(ListAPIView):
 # API PARA AGREGAR FOTOS A LA MASCOTA
 class CreateMascotaMedia(CreateAPIView):
     serializer_class = MediaMascotaSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         media_mascota = MediaMascotaSerializer(data=request.data)
@@ -279,6 +332,8 @@ class ListMediaMascota(ListAPIView):
 
 # API PARA CAMBIAR ESTADO DEL RECORDATORIO
 @api_view(['put'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def status_recordatorio(request):
     try:
         recordatorio = request.data['recordatorio']
@@ -300,15 +355,21 @@ def status_recordatorio(request):
 # API PARA GENERAR MASCOTA PREMIUM
 class MascotaPremiumAPI(CreateAPIView):
     serializer_class = MascotaPremiumSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 # Api para crear las notificaciones
 class CreateFCM(CreateAPIView):
     serializer_class = FCMDeviceSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 # API PARA ENCONTRAR MASCOTA PREMIUM
-@api_view(['POST'])
+@api_view(['post'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def find_pet_premium(request):
     # obtener la mascota en base al microchip
     mascota_perdida = MascotaPremium.objects.get(microchip=request.data['microchip'])
@@ -348,6 +409,8 @@ def find_pet_premium(request):
 
 # API PARA REFUGIAR MASCOTA PERDIDA CALLE
 @api_view(['POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def refugiarPerdido(request):
     if request.method == "POST":
         # Llegaran por parametros los atributos de mascota calle: id, imagen, tiempo, numero, nombre
@@ -371,6 +434,8 @@ def refugiarPerdido(request):
 # API PARA QUE USUARIO CREE VACUNAS
 class CreateVacunaUsuarioAPI(CreateAPIView):
     serializer_class = CVacunaUsuarioSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         # si ya existe vacuna con ese nombre
@@ -395,6 +460,9 @@ class VacunaUsuarioAPI(ListAPIView):
 
 # API GENERICA QUE ACTUALIZA O ELIMINAR LAS VACUNAS POR SU ID
 class GVacunaUsuarioAPI(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def get_obj_vacuna(self, pk):
         try:
             return VacunaUsuario.objects.get(id=pk)
@@ -416,6 +484,8 @@ class GVacunaUsuarioAPI(APIView):
 
 
 @api_view(['POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def delete_vacuna_usuario(request):
     if request.method == 'POST':
         try:
@@ -429,6 +499,9 @@ def delete_vacuna_usuario(request):
 
 # API GENERICA PARA ACTUALIZAR Y ELIMINAR UNA MASCOTA
 class GMascotaUserAPI(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def get_obj_mascota(self, pk):
         try:
             return Mascota.objects.get(id=pk)
@@ -457,6 +530,8 @@ class GMascotaUserAPI(APIView):
 
 
 @api_view(['PUT'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def cambio_foto_mascota(request):
     try:
         id_mascota = request.data['id']
@@ -478,6 +553,8 @@ def cambio_foto_mascota(request):
 
 # API PARA ELIMINAR FOTO DE MASCOTA
 @api_view(['delete'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def eliminar_foto_mascota(request, pk):
     try:
         obj_media = ImagenesMascota.objects.get(id=pk)
@@ -488,6 +565,8 @@ def eliminar_foto_mascota(request, pk):
 
 
 @api_view(['delete'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def eliminar_reporte_mascota_perdida(request, pk):
     try:
         obj_mascota_perdida = MascotaPerdida.objects.get(id=pk)
@@ -498,6 +577,9 @@ def eliminar_reporte_mascota_perdida(request, pk):
 
 
 class GHistorialVacunaApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def obj_historial_vacuna(self, pk):
         try:
             return HistorialVacuna.objects.get(id=pk)
@@ -519,6 +601,8 @@ class GHistorialVacunaApi(APIView):
 
 
 @api_view(['put'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def cambiar_foto_medicamento(request, pk):
     try:
         obj_medicamento = HistorialMedicamento.objects.get(id=pk)
@@ -536,6 +620,9 @@ def cambiar_foto_medicamento(request, pk):
 
 # API GENERICA PARA ACTUALIZAR Y ELIMINAR MEDICAMENTOS
 class GHistorialMedicamentoApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def obj_historial_medicamento(self, pk):
         try:
             return HistorialMedicamento.objects.get(id=pk)
@@ -558,6 +645,9 @@ class GHistorialMedicamentoApi(APIView):
 
 # API GENERICA PARA ACTUALIZAR Y ELIMINAR RECORDATORIO
 class GRecordatorioApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def obj_recordatorio(self, pk):
         try:
             return Recordatorio.objects.get(id=pk)
@@ -588,6 +678,8 @@ class CiudadesApi(ListAPIView):
 
 
 @api_view(['post'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def generatevolante(request):
     try:
         obj_mascota = MascotaPerdida.objects.get(id=request.data['id'])
@@ -604,16 +696,15 @@ def generatevolante(request):
         return Response({'data': 'no found'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MyEncoder(json.JSONEncoder):
+"""class MyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (bytes, bytearray)):
             return obj.decode("ASCII")  # <- or any other encoding of your choice
         # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)
-
+        return json.JSONEncoder.default(self, obj)"""
 
 # API PARA GENERAR JWT
-class LoginTokenApi(APIView):
+"""class LoginTokenApi(APIView):
     def post(self, request, *args, **kwargs):
 
         # si no hay datos
@@ -626,7 +717,7 @@ class LoginTokenApi(APIView):
 
         try:
             # preguntamos por el user
-            user_obj = User.objects.get(username=username)
+            user_obj = User.objects.get(usernaxme=username)
             # chekeamos el password
             if user_obj.check_password(password):
                 # autentificamos el usuario
@@ -656,10 +747,9 @@ class LoginTokenApi(APIView):
         else:
             return Response(
                 json.dumps({'Error': 'Credenciales Invalidas'}), status=status.HTTP_400_BAD_REQUEST,
-                content_type="application/json")
+                content_type="application/json")"""
 
-
-class TokenAuthentication(BaseAuthentication):
+"""class TokenAuthentication(BaseAuthentication):
     model = None
 
     def get_model(self):
@@ -698,13 +788,11 @@ class TokenAuthentication(BaseAuthentication):
         email = payload['email']
         msg = {'Error': "Token mismatch", 'status': "401"}
         try:
-
             user = User.objects.get(
                 email=email,
                 id=id_user,
                 is_active=True
             )
-
             if not user.token['token'] == token:
                 raise exceptions.AuthenticationFailed(msg)
 
@@ -716,4 +804,4 @@ class TokenAuthentication(BaseAuthentication):
         return user, token
 
     def authenticate_header(self, request):
-        return 'Token'
+        return 'Token'"""

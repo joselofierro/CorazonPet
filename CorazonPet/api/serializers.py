@@ -20,6 +20,12 @@ from apps.usuario.models import Usuario, VacunaUsuario
 from apps.vacuna.models import Vacuna
 
 
+class CreateManyRazasSerializer(ModelSerializer):
+    class Meta:
+        model = Raza
+        fields = ('nombre', 'tipo_mascota')
+
+
 class RazaSerializer(ModelSerializer):
     class Meta:
         model = Raza
@@ -41,18 +47,16 @@ class RazaMascotaSerializer(ModelSerializer):
 
 
 class TipoMascotaSerializer(ModelSerializer):
-    raza = RazaSerializer(many=True)
-
     class Meta:
         model = TipoMascota
-        fields = ('id', 'nombre', 'raza')
+        fields = ('id', 'nombre')
 
 
 class CreateUserSerializer(ModelSerializer):
     class Meta:
         model = Usuario
         fields = '__all__'
-        read_only_fields = ('premium',)
+        read_only_fields = ('premium', 'user_token')
 
 
 class ListUserByParameter(ModelSerializer):
@@ -271,4 +275,4 @@ class CiudadSerializer(ModelSerializer):
 
     class Meta:
         model = Ciudad
-        fields = ('nombre', 'departamento',)
+        fields = ('id', 'nombre', 'departamento',)

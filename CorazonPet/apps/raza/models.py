@@ -5,7 +5,7 @@ from apps.tipo_mascota.models import TipoMascota
 
 
 class Raza(models.Model):
-    nombre = models.CharField(max_length=40, blank=False, null=False)
+    nombre = models.CharField(max_length=150, blank=False, null=False)
     tipo_mascota = models.ForeignKey(TipoMascota, related_name='raza')
 
     def __str__(self):

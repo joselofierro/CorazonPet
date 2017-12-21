@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -32,6 +33,7 @@ class Usuario(models.Model):
     premium = models.BooleanField(default=False)
     contrasena = models.CharField(blank=True, null=False, default="", max_length=100)
     ciudad = models.ForeignKey(Ciudad, blank=True, null=True)
+    user_token = models.OneToOneField(User, null=True, blank=True)
 
     class Meta:
         permissions = (

@@ -5,7 +5,9 @@ from rest_framework_jwt.views import obtain_jwt_token
 from api.views import *
 
 urlpatterns = [
-    url(r'^tipo_mascotas', TipoMascotaAPI.as_view(), name='tipos_mascotas_api'),
+    url(r'^tipo_mascotas$', TipoMascotaAPI.as_view(), name='tipos_mascotas_api'),
+    url(r'^crear_razas$', crear_raza, name='crear_razas_api'),
+    url(r'^listado_razas/(?P<id>\d+)/$', ListadoMascotaApi.as_view(), name='listado_raza'),
     url(r'^usuarios$', CreateUser.as_view(), name='user_api'),
     url(r'^usuario/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ListUserByCorreo.as_view(),
         name='user_id_api'),
@@ -47,7 +49,7 @@ urlpatterns = [
     url(r'^eliminar_foto_mascota/(?P<pk>\d+)/$', eliminar_foto_mascota, name='eliminar_foto_mascota'),
     url(r'^generar_volante$', generatevolante, name='generate_volante_api'),
     url(r'^eliminar_reporte_mascota/(?P<pk>\d+)/$', eliminar_reporte_mascota_perdida, name='eliminar_reporte_api'),
-    url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
+    # url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
     url(r'^cambiar_foto_medicamento/(?P<pk>\d+)/$', cambiar_foto_medicamento, name='cambiar_foto_medicamento'),
     url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna')
 ]
