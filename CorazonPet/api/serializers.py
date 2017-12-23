@@ -83,10 +83,12 @@ class MascotaSerializer(ModelSerializer):
     usuario = StringRelatedField(source='usuario.nombre')
     imagen = ImagenMascotasSerializer(many=True)
     raza = StringRelatedField(source='raza.nombre')
+    microchip = StringRelatedField(source='mascota_premium.microchip')
 
     class Meta:
         model = Mascota
-        fields = '__all__'
+        fields = ('id', 'dia', 'mes', 'foto_perfil', 'raza', 'sexo', 'nombre', 'edad', 'usuario', 'imagen',
+                  'esterilizado', 'microchip', 'aseguradora', 'numero_poliza', 'numero_contacto')
 
 
 class ReportarMascotaPremiumSerializer(ModelSerializer):

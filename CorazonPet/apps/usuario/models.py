@@ -27,7 +27,6 @@ class Usuario(models.Model):
     link = models.URLField(blank=True, null=True)
     genero = models.CharField(blank=True, null=True, max_length=2, choices=Genero)
     foto = models.TextField(blank=True, null=True)
-    verificado = models.BooleanField(default=True)
     telefono = models.BigIntegerField(blank=True, default=0, null=False)
     email = models.CharField(max_length=30, blank=False, null=False, unique=True)
     premium = models.BooleanField(default=False)

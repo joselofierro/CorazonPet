@@ -31,7 +31,7 @@ def register_premium(modeladmin, request, queryset):
 
 class UsuarioAdmin(admin.ModelAdmin):
     # solo podra modificar el User que tenga permisos para agregar premium
-    list_display = ('id', 'nombre', 'apellido', 'edad', 'foto_perfil', 'verificado', 'telefono', 'email', 'premium')
+    list_display = ('id', 'nombre', 'apellido', 'edad', 'foto_perfil', 'telefono', 'email', 'premium')
     list_filter = ('nombre', 'email')
     search_fields = ['nombre']
     # prepopulated_fields = {"llave": ("valor",)}

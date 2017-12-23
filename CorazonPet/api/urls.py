@@ -11,8 +11,7 @@ urlpatterns = [
     url(r'^usuarios$', CreateUser.as_view(), name='user_api'),
     url(r'^usuario/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ListUserByCorreo.as_view(),
         name='user_id_api'),
-    url(r'^login_user/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/(?P<contrasena>.*)$', login,
-        name='login_user_api'),
+    url(r'^login_user$', login, name='login_user_api'),
     url(r'^mascotas_perdidas$', PetLostApi.as_view(), name='pet_lost_api'),
     url(r'^aliados$', AliadoApi.as_view(), name='aliados_api'),
     url(r'^sitios$', SitiosApi.as_view(), name='sitios_api'),
@@ -51,6 +50,7 @@ urlpatterns = [
     url(r'^eliminar_reporte_mascota/(?P<pk>\d+)/$', eliminar_reporte_mascota_perdida, name='eliminar_reporte_api'),
     # url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
     url(r'^cambiar_foto_medicamento/(?P<pk>\d+)/$', cambiar_foto_medicamento, name='cambiar_foto_medicamento'),
+    url(r'^mascota_perdida_microchip/(?P<microchip>.+)/$', getMascotaPerdidaByMicrochip, name='mascota_perdia_micrhochip'),
     url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna')
 ]
 

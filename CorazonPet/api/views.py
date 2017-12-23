@@ -58,9 +58,15 @@ class CreateUser(CreateAPIView):
     def post(self, request, **kwargs):
         try:
             usuario = Usuario.objects.get(email=request.data['email'])
-            print(usuario)
+            token = Token.objects.get(user=usuario.user_token)
             usuario_serializer = CreateUserSerializer(usuario)
-            return Response(usuario_serializer.data, status=status.HTTP_200_OK)
+            # guardamos la data en una variable
+            json_serializer = usuario_serializer.data
+            # eliminamos el campo user_token
+            json_serializer.pop('user_token')
+            # agregamos el campo token con la llave del token
+            json_serializer['token'] = token.key
+            return Response(json_serializer, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             usuario_serializer = CreateUserSerializer(data=request.data)
             if usuario_serializer.is_valid():
@@ -68,41 +74,59 @@ class CreateUser(CreateAPIView):
                 usuario = User.objects.create(
                     first_name=request.data['nombre'],
                     last_name=request.data['apellido'],
-                    username=request.data['email'],
+                    username=request.data['nombre'],
                     email=request.data['email'])
 
                 # Creamos el token
                 token = Token.objects.create(user=usuario)
 
-                # Guardamos el usuario
+                # instanciamos el serializer del usuario
                 usuario_obj = usuario_serializer.save()
+                # pasamos al usuario el User
                 usuario_obj.user_token = usuario
 
                 # Guardamos contraseña encriptada
-                contrasena = request.data['contrasena']
-                if contrasena != "":
-                    contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
-                    usuario_obj.contrasena = contrasena_cifrada
+                if 'contrasena' in request.data:
+                    contrasena = request.data['contrasena']
+                    if contrasena != "":
+                        contrasena_cifrada = make_password(contrasena, salt=None, hasher='sha1')
+                        usuario_obj.contrasena = contrasena_cifrada
 
+                # guardamos la instancia con la pass y el User
                 usuario_obj.save()
+                # instanciamos el nuevo serializer
                 usuario_serializer = CreateUserSerializer(usuario_obj)
+                # guardamos la data en una variable
                 json_serializer = usuario_serializer.data
+                # eliminamos el campo user_token
                 json_serializer.pop('user_token')
+                # agregamos el campo token con la llave del token
                 json_serializer['token'] = token.key
                 return Response(json_serializer, status=status.HTTP_201_CREATED)
             else:
                 return Response(usuario_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
-def login(request, email, contrasena):
-    if request.method == 'GET':
+@api_view(['post'])
+def login(request):
+    if request.method == 'POST':
         try:
-            usuario = Usuario.objects.get(email=email, contrasena=contrasena)
-            serializer = CreateUserSerializer(usuario, many=False)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            email = request.data['email']
+            password = request.data['pass']
+            usuario = Usuario.objects.get(email=email)
+            if check_password(password, usuario.contrasena):
+                serializer = CreateUserSerializer(usuario, many=False)
+                # instanciamos la data del json
+                user_data = serializer.data
+                # obtenemos el token del User
+                token = Token.objects.get(user=usuario.user_token)
+                # al campo token le ponemos la llave del token
+                user_data['token'] = token.key
+                return Response(user_data, status=status.HTTP_200_OK)
+            else:
+                return Response({'data': 'Credenciales incorrectas'}, status=status.HTTP_400_BAD_REQUEST)
         except Usuario.DoesNotExist:
-            return Response({'data': 'Credenciales incorrectas'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'data': 'No existe usuario con este email'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # API de listado de usuario por correo
@@ -111,7 +135,10 @@ class ListUserByCorreo(APIView):
         try:
             user_obj = Usuario.objects.get(email=email)
             user_serializer = ListUserByParameter(user_obj)
-            return Response(user_serializer.data, status=status.HTTP_200_OK)
+            user_data = user_serializer.data
+            token = Token.objects.get(user=user_obj.user_token)
+            user_data['token'] = token.key
+            return Response(user_data, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             return Response({'data': 'No existe usuario con ese correo'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -564,7 +591,7 @@ def eliminar_foto_mascota(request, pk):
         return Response({'data': 'Imagen no existe'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['delete'])
+@api_view(['DELETE'])
 @authentication_classes((TokenAuthentication,))
 @permission_classes((IsAuthenticated,))
 def eliminar_reporte_mascota_perdida(request, pk):
@@ -694,6 +721,23 @@ def generatevolante(request):
         return Response({'data': 'volante generado'}, status=status.HTTP_200_OK)
     except MascotaPerdida.DoesNotExist:
         return Response({'data': 'no found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def getMascotaPerdidaByMicrochip(request, microchip):
+    try:
+        obj_mascota_premium = MascotaPremium.objects.get(microchip=microchip)
+        obj_mascota_perdida = MascotaPerdida.objects.get(mascota=obj_mascota_premium.mascota)
+        mascota_perdida_serializer = MascotaPerdidaSerializer(obj_mascota_perdida, many=False,
+                                                              context={'request': request})
+        return Response(mascota_perdida_serializer.data, status=status.HTTP_200_OK)
+    except MascotaPremium.DoesNotExist:
+        return Response({'data': "No existe mascota con este micrhochip"}, status=status.HTTP_404_NOT_FOUND)
+    except MascotaPerdida.DoesNotExist:
+        obj_mascota_premium = MascotaPremium.objects.get(microchip=microchip)
+        serializer_mascota = MascotaUserSerializer(obj_mascota_premium.mascota, many=False,
+                                                   context={'request': request})
+        return Response(serializer_mascota.data, status=status.HTTP_202_ACCEPTED)
 
 
 """class MyEncoder(json.JSONEncoder):

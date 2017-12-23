@@ -22,6 +22,7 @@ from CorazonPet import settings
 urlpatterns = [
     url(r'^', admin.site.urls),
     url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^estadisticas/', include('apps.estadistica.urls', namespace='estadisticas')),
 
 ]
 

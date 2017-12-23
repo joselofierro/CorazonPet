@@ -24,4 +24,4 @@ class MascotaPerdida(models.Model):
         else:
             return 'No hay imagen'
 
-    volante_pet.allow_tags =True
+    volante_pet.allow_tags = True
