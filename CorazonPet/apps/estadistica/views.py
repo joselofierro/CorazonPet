@@ -4,6 +4,8 @@ from django.shortcuts import render
 from apps.ciudad.models import Ciudad
 from apps.historial_vacuna.models import HistorialVacuna
 from apps.mascota.models import Mascota
+from apps.mascota_perdida.models import MascotaPerdida
+from apps.mascota_premium.models import MascotaPremium
 from apps.raza.models import Raza
 from apps.tipo_mascota.models import TipoMascota
 
@@ -73,4 +75,19 @@ def vacunados(request):
 
 
 def mascotas_poliza(request):
-    pass
+    labels = ["Animales con poliza"]
+
+    poliza = Mascota.objects.filter(numero_poliza__isnull=False).count()
+
+    contexto = {"labels": labels, "datos": [poliza], "Titulo": "Animales con poliza", "tipo": "bar"}
+
+    return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
+
+
+def mascotas_microchip(request):
+    labels = ["Mascota con Microchip"]
+    mascotas_premium = MascotaPremium.objects.filter(microchip__isnull=False).count()
+
+    contexto = {"labels": labels, "datos": [mascotas_premium], "Titulo": "Identificación", "tipo": "pie"}
+
+    return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')

@@ -9,4 +9,7 @@ urlpatterns = [
     url(r'^razas$', razas_mascota, name='raza_mascota_estadistica'),
     url(r'^mascotas_esterilizadas$', esterilizados, name='mascotas_esterilizadas_estadistica'),
     url(r'^mascotas_vacunas$', vacunados, name='mascotas_vacunas_estadistica'),
+    url(r'^mascotas_poliza$', mascotas_poliza, name='mascotas_poliza_estadistica'),
+    url(r'^mascotas_microchip$', mascotas_microchip, name='mascotas_premium_estadistica'),
+
 ]

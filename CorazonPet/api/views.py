@@ -149,25 +149,43 @@ class PetLostApi(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        mascota_serializer = ReportarMascotaPremiumSerializer(data=request.data)
-        if mascota_serializer.is_valid():
+        mascota_perdida_serializer = ReportarMascotaPremiumSerializer(data=request.data)
+        if mascota_perdida_serializer.is_valid():
             titulo = "CorazónPet"
             mensaje = "Una mascota ha sido reportada como perdida. ¡Ingresa a la nuestra app y ayúdanos a encontrarla! 🐕"
+            mascota_perdida_serializer.save()
 
+            mascota_perdida = MascotaPerdida.objects.get(mascota_id=request.data['mascota'])
+
+            mascota_perdida_serializer = MascotaPerdidaSerializer(mascota_perdida, many=False,
+                                                                  context={'request': request})
             # Obtenemos los usuarios Android
             usuarios_android = FCMDevice.objects.filter(type='android')
 
             # Enviamos la notificacion
-            usuarios_android.send_message(data={'titulo': titulo, 'mensaje': mensaje})
+            usuarios_android.send_message(data={
+                "type": "MEASURE_CHANGE",
+                "custom_notification": {
+                    "body": mensaje,
+                    "title": titulo,
+                    "priority": "high",
+                    "icon": "ic_notification_silueta",
+                    "show_in_foreground": True,
+                    "id": "1",
+                    "large_icon": "ic_launcher",
+                    "big_text": mensaje,
+                    "sound": "default",
+                    "lights": True,
+                    "mascota_perdida": mascota_perdida_serializer.data
+                }
+            })
 
             # Obtenemos los usuarios ios
             usuarios_ios = FCMDevice.objects.filter(type='ios')
             # Enviamos la notificacion
             usuarios_ios.send_message(title=titulo, body=mensaje, sound='default')
-
-            mascota_serializer.save()
-            return Response(mascota_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(mascota_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(mascota_perdida_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(mascota_perdida_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         mascota_perdida_obj = MascotaPerdida.objects.all().order_by('-fecha', '-hora')
