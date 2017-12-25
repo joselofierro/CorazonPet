@@ -176,14 +176,16 @@ class PetLostApi(APIView):
                     "big_text": mensaje,
                     "sound": "default",
                     "lights": True,
-                    "mascota_perdida": mascota_perdida_serializer.data
+                    "mascota_perdida": json.dumps(mascota_perdida_serializer.data)
                 }
             })
 
             # Obtenemos los usuarios ios
             usuarios_ios = FCMDevice.objects.filter(type='ios')
             # Enviamos la notificacion
-            usuarios_ios.send_message(title=titulo, body=mensaje, sound='default')
+            usuarios_ios.send_message(title=titulo, body=mensaje, sound='default', data={
+                "mascota_perdida": mascota_perdida_serializer.data
+            })
             return Response(mascota_perdida_serializer.data, status=status.HTTP_201_CREATED)
         return Response(mascota_perdida_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
