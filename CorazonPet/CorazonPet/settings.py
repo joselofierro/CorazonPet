@@ -32,6 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '192.168.10.227',
     '.elasticbeanstalk.com',
+    '.corazonpet.com'
 ]
 
 # Application definition
