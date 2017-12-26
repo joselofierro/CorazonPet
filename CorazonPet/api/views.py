@@ -146,7 +146,6 @@ class ListUserByCorreo(APIView):
 # API PARA REPORTAR MASCOTAS PERDIDAS Y LISTAR MASCOTAS PERDIDAS
 class PetLostApi(APIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         mascota_perdida_serializer = ReportarMascotaPremiumSerializer(data=request.data)
