@@ -317,7 +317,7 @@ class ListRecordatorioApi(ListAPIView):
 # API PARA CREAR MASCOTAS
 class CreateMascotaApi(CreateAPIView):
     serializer_class = CreateMascotaSerializer
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
