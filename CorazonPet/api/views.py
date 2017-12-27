@@ -797,7 +797,7 @@ def olvide_contrasena(request):
                     # creamos el registro en la tabla recuperar
                     RecuperarContrasena.objects.create(usuario=usuario, token=token)
 
-                    msg = render_to_string('mail_templates/recuperar_pass.html', {
+                    msg = render_to_string('mail_templates/correo_recuperar_pass.html', {
                         'token': token
                     })
 
