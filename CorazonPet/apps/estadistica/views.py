@@ -12,10 +12,12 @@ from apps.tipo_mascota.models import TipoMascota
 
 
 def mascotas_ciudad(request):
-    ciudad = Ciudad.objects.all()
-    mascotas = Mascota.objects.all().count()
+    ciudades = Ciudad.objects.all().values_list('nombre', flat=True)
+    list_ciudad = []
+    for ciudad in ciudades:
+        list_ciudad.append(Mascota.objects.filter(usuario__ciudad__nombre=ciudad).count())
 
-    contexto = {"labels": ciudad, "datos": [mascotas], "titulo": "Mascotas por ciudad", "tipo": "pie"}
+    contexto = {"labels": ciudades, "datos": [list_ciudad], "titulo": "Mascotas por ciudad", "tipo": "pie"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
@@ -31,31 +33,57 @@ def mascota_genero(request):
 
 
 def tipo_mascota(request):
-    labels = TipoMascota.objects.all()
+    labels = TipoMascota.objects.all().values_list('nombre', flat=True)
 
-    numero_tipo_mascota = Mascota.objects.filter(raza__tipo_mascota=labels).count()
+    lista_dato = []
 
-    contexto = {"labels": labels, "datos": [numero_tipo_mascota], "titulo": "Tipo de mascota", "tipo": "bar"}
+    for tp in labels:
+        lista_dato.append(Mascota.objects.filter(raza__tipo_mascota__nombre=tp).count())
+
+    contexto = {"labels": labels, "datos": lista_dato, "titulo": "Tipo de mascota", "tipo": "bar"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
 
-def razas_mascota(request):
-    mascotas = Mascota.objects.all()
-    razas = Mascota.objects.all().count()
+def razas_mascota_perro(request):
+    mascotas = Mascota.objects.filter(raza__tipo_mascota__nombre="Perro")
+
+    labels = []
+    datos = []
+
     for mascota in mascotas:
-        labels = Raza.objects.filter(mascota=mascota)
+        labels.append(mascota.raza.nombre)
 
-        contexto = {"labels": labels, "datos": [razas], "titulo": "Raza de mascotas", "tipo": "bar"}
+    for raza in labels:
+        datos.append(Mascota.objects.filter(raza__nombre=raza).count())
 
-        return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
+    contexto = {"labels": labels, "datos": datos, "titulo": "Raza de perros", "tipo": "bar"}
+
+    return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
+
+
+def razas_mascota_gato(request):
+    mascotas = Mascota.objects.filter(raza__tipo_mascota__nombre="Gato")
+
+    labels = []
+    datos = []
+
+    for mascota in mascotas:
+        labels.append(mascota.raza.nombre)
+
+    for raza in labels:
+        datos.append(Mascota.objects.filter(raza__nombre=raza).count())
+
+    contexto = {"labels": labels, "datos": datos, "titulo": "Raza de perros", "tipo": "bar"}
+
+    return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
 
 def esterilizados(request):
     labels = ["Macho", "Hembra"]
 
-    estelizado_macho = Mascota.objects.filter(esterilizado=True, sexo="M").count()
-    estelizado_hembra = Mascota.objects.filter(esterilizado=True, sexo="F").count()
+    estelizado_macho = Mascota.objects.filter(Q(esterilizado=True) & Q(sexo="M")).count()
+    estelizado_hembra = Mascota.objects.filter(Q(esterilizado=True) & Q(sexo="F")).count()
 
     contexto = {"labels": labels, "datos": [estelizado_macho, estelizado_hembra], "titulo": "Mascotas Esterilizadas",
                 "tipo": "pie"}
@@ -78,17 +106,17 @@ def vacunados(request):
 def mascotas_poliza(request):
     labels = ["Animales con poliza", "Animales sin poliza"]
 
-    poliza = Mascota.objects.filter(~Q(numero_poliza='')).count()
+    poliza_con = Mascota.objects.filter(~Q(numero_poliza='')).count()
     poliza_sin = Mascota.objects.filter(numero_poliza='').count()
 
-    contexto = {"labels": labels, "datos": [poliza, poliza_sin], "Titulo": "Animales con poliza", "tipo": "bar"}
+    contexto = {"labels": labels, "datos": [poliza_con, poliza_sin], "Titulo": "Animales con poliza", "tipo": "bar"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
 
 def mascotas_microchip(request):
     labels = ["Mascota con Microchip"]
-    mascotas_premium = MascotaPremium.objects.filter(microchip__isnull=False).count()
+    mascotas_premium = MascotaPremium.objects.all().count()
 
     contexto = {"labels": labels, "datos": [mascotas_premium], "Titulo": "Identificación", "tipo": "pie"}
 

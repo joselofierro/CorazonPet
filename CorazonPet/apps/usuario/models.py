@@ -57,3 +57,8 @@ class VacunaUsuario(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class RecuperarContrasena(models.Model):
+    usuario = models.OneToOneField(Usuario)
+    token = models.TextField(blank=False, null=False)

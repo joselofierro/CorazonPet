@@ -1,13 +1,13 @@
 import base64
-import jwt, json
-from django.contrib.auth import authenticate
+import json
+import time
+
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+
 from django.template.loader import render_to_string
 from fcm_django.api.rest_framework import FCMDeviceSerializer
 from fcm_django.models import FCMDevice
 from django.core.mail import send_mail
-from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.generics import *
@@ -17,9 +17,12 @@ from api.serializers import *
 from django.core.files.base import ContentFile
 from django.contrib.auth.hashers import check_password, make_password
 from rest_framework.authentication import TokenAuthentication
-
+import hashlib
 
 # API con el listado de tipos de mascota y su respectiva razas
+from apps.usuario.models import RecuperarContrasena
+
+
 class TipoMascotaAPI(ListAPIView):
     serializer_class = TipoMascotaSerializer
 
@@ -31,7 +34,7 @@ class TipoMascotaAPI(ListAPIView):
 @authentication_classes((TokenAuthentication,))
 @permission_classes((IsAuthenticated,))
 def crear_raza(request):
-    # recorremos el json que viene del post, una vez terminado el ciclo respondemos con un 200
+    # recorremos el json que viene del post, una vez terminado el ciclo rexspondemos con un 200
     for mascota in request.data:
         serializer = CreateManyRazasSerializer(data=mascota)
         if serializer.is_valid():
@@ -317,7 +320,7 @@ class ListRecordatorioApi(ListAPIView):
 # API PARA CREAR MASCOTAS
 class CreateMascotaApi(CreateAPIView):
     serializer_class = CreateMascotaSerializer
-    authentication_classes = (TokenAuthentication, )
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
@@ -433,7 +436,21 @@ def find_pet_premium(request):
         if fcm.type == "ios":
             fcm.send_message(title=titulo, body=mensaje, sound='default')
         elif fcm.type == "android":
-            fcm.send_message(data={'titulo': titulo, 'mensaje': mensaje})
+            fcm.send_message(data={
+                "type": "MEASURE_CHANGE",
+                "custom_notification": {
+                    "body": mensaje,
+                    "title": titulo,
+                    "priority": "high",
+                    "icon": "ic_notification_silueta",
+                    "show_in_foreground": True,
+                    "id": "1",
+                    "large_icon": "ic_launcher",
+                    "big_text": mensaje,
+                    "sound": "default",
+                    "lights": True,
+                }
+            })
 
     # Llegaran por parametros los atributos: latitud, longitud, telefono, microchip
     msg = render_to_string('mail_templates/EncontroMascotaPremium.html', {
@@ -471,7 +488,7 @@ def refugiarPerdido(request):
             'Alguien quiere refugiar una mascota',
             'Mensaje',
             'backend.corazon@gmail.com',
-            ['giussepr@gmail.com'],
+            ['diana.sendoya@gmail.com', 'juanpps78@gmail.com'],
             html_message=msg)
         return Response({'data': 'Gracias'}, status=status.HTTP_200_OK)
     else:
@@ -760,112 +777,29 @@ def getMascotaPerdidaByMicrochip(request, microchip):
         return Response(serializer_mascota.data, status=status.HTTP_202_ACCEPTED)
 
 
-"""class MyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, (bytes, bytearray)):
-            return obj.decode("ASCII")  # <- or any other encoding of your choice
-        # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)"""
-
-# API PARA GENERAR JWT
-"""class LoginTokenApi(APIView):
-    def post(self, request, *args, **kwargs):
-
-        # si no hay datos
-        if not request.data:
-            return Response({'Error': 'Digita el usuario/Contraseña'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # recibimos el user y el pass del User registrado
-        username = request.data['username']
-        password = request.data['password']
-
+@api_view(['POST'])
+def olvide_contrasena(request):
+    if request.method == 'POST':
         try:
-            # preguntamos por el user
-            user_obj = User.objects.get(usernaxme=username)
-            # chekeamos el password
-            if user_obj.check_password(password):
-                # autentificamos el usuario
-                user_obj = authenticate(username=username, password=password)
-        except User.DoesNotExist:
-            return Response({'Error': 'Credenciales Invalidas'}, status=status.HTTP_400_BAD_REQUEST)
+            usuario = Usuario.objects.get(email=request.data['email'])
+            fecha = time.strftime("%d/%m/%Y")
 
-        # si hay un usuario, generamos el payload
-        if user_obj:
-            # generamos el payload(data)
-            payload = {
-                "id": user_obj.id,
-                "email": user_obj.email
-            }
+            token = hashlib.sha1(usuario.email + "_" + fecha)
 
-            # codificamos el payload como una llave
-            jwt_token = {'token': jwt.encode(payload, "SECRET_KEY")}
-            print(jwt_token)
+            RecuperarContrasena.objects.create(usuario=usuario, token=token)
 
-            print(json.dumps(jwt_token, cls=MyEncoder))
+            msg = render_to_string('mail_templates/recuperar_contrasena.html', {
+                'token': token
+            })
 
-            # lo volvemos a formato json como una respuesta
-            return HttpResponse(
-                json.dumps(jwt_token, cls=MyEncoder), status=200, content_type="application/json"
-            )
+            send_mail(
+                'Reestablecer contraseña corazónpet',
+                'Mensaje',
+                'backend.corazon@gmail.com',
+                [usuario.email],
+                html_message=msg)
 
-        else:
-            return Response(
-                json.dumps({'Error': 'Credenciales Invalidas'}), status=status.HTTP_400_BAD_REQUEST,
-                content_type="application/json")"""
+            return Response({"data": "Te hemos enviado un email, sigue los pasos"}, status=status.HTTP_200_OK)
 
-"""class TokenAuthentication(BaseAuthentication):
-    model = None
-
-    def get_model(self):
-        return User
-
-    def authenticate(self, request):
-        auth = get_authorization_header(request).split()
-        print(auth)
-        if not auth or auth[0].lower() != b'token':
-            return None
-
-        if len(auth) == 1:
-            msg = 'Cabezera de token invalida'
-            raise exceptions.AuthenticationFailed(msg)
-
-        elif len(auth) > 2:
-            msg = 'Cabezera de token invalida'
-            raise exceptions.AuthenticationFailed(msg)
-
-        try:
-            token = auth[1]
-            if token == "null":
-                msg = "Token nulo no almacenado"
-                raise exceptions.AuthenticationFailed(msg)
-
-        except UnicodeError:
-            msg = "Token invalido, No debe contener caracteres invalidos"
-            raise exceptions.AuthenticationFailed(msg)
-
-        return self.authenticate_credentials(token)
-
-    def authenticate_credentials(self, token):
-        model = self.get_model()
-        payload = jwt.decode(token, "SECRET_KEY")
-        id_user = payload['id']
-        email = payload['email']
-        msg = {'Error': "Token mismatch", 'status': "401"}
-        try:
-            user = User.objects.get(
-                email=email,
-                id=id_user,
-                is_active=True
-            )
-            if not user.token['token'] == token:
-                raise exceptions.AuthenticationFailed(msg)
-
-        except jwt.ExpiredSignature or jwt.DecodeError or jwt.InvalidTokenError:
-            return HttpResponse({'Error': "Token is invalid"}, status="403")
-        except User.DoesNotExist:
-            return HttpResponse({'Error': "Internal server error"}, status="500")
-
-        return user, token
-
-    def authenticate_header(self, request):
-        return 'Token'"""
+        except Usuario.DoesNotExist:
+            return Response({'data': "No existe usuario con este email"}, status=status.HTTP_404_NOT_FOUND)

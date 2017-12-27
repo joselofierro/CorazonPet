@@ -32,7 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '192.168.10.227',
     '.elasticbeanstalk.com',
-    '.corazonpet.com'
+    '.corazonpet.com',
+    'localhost'
 ]
 
 # Application definition
@@ -100,10 +101,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CorazonPet.wsgi.application'
 
+# variable global de autentificacion por token
 REST_FRAMEWORK = {
-   'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-   )
+    )
 }
 
 # Database
