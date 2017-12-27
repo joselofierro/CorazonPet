@@ -53,6 +53,6 @@ urlpatterns = [
     url(r'^mascota_perdida_microchip/(?P<microchip>.+)/$', getMascotaPerdidaByMicrochip, name='mascota_perdia_micrhochip'),
     url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna'),
     url(r'^olvide_contrasena$', olvide_contrasena, name='olvide_password'),
+    url(r'^restablecer_contrasena$', restablecer_password, name='olvide_password'),
 ]
 
-# urlpatterns = format_suffix_patterns(urlpatterns)

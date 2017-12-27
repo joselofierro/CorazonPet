@@ -11,13 +11,15 @@ from apps.raza.models import Raza
 from apps.tipo_mascota.models import TipoMascota
 
 
+# el chart js se alimenta de un JSON con los datos para poder graficar
+
 def mascotas_ciudad(request):
     ciudades = Ciudad.objects.all().values_list('nombre', flat=True)
     list_ciudad = []
     for ciudad in ciudades:
         list_ciudad.append(Mascota.objects.filter(usuario__ciudad__nombre=ciudad).count())
 
-    contexto = {"labels": ciudades, "datos": [list_ciudad], "titulo": "Mascotas por ciudad", "tipo": "pie"}
+    contexto = {"labels": ciudades, "datos": list_ciudad, "titulo": "Mascotas por ciudad", "tipo": "pie"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
@@ -118,6 +120,6 @@ def mascotas_microchip(request):
     labels = ["Mascota con Microchip"]
     mascotas_premium = MascotaPremium.objects.all().count()
 
-    contexto = {"labels": labels, "datos": [mascotas_premium], "Titulo": "Identificación", "tipo": "pie"}
+    contexto = {"labels": labels, "datos": mascotas_premium, "Titulo": "Identificación", "tipo": "pie"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
