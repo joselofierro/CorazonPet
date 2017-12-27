@@ -100,6 +100,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CorazonPet.wsgi.application'
 
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+   )
+}
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 if 'RDS_DB_NAME' in os.environ:
@@ -124,16 +130,6 @@ else:
             'PORT': 5432
         }
     }
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

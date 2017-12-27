@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
@@ -32,7 +33,7 @@ def mascota_genero(request):
 def tipo_mascota(request):
     labels = TipoMascota.objects.all()
 
-    numero_tipo_mascota = Mascota.objects.all().count()
+    numero_tipo_mascota = Mascota.objects.filter(raza__tipo_mascota=labels).count()
 
     contexto = {"labels": labels, "datos": [numero_tipo_mascota], "titulo": "Tipo de mascota", "tipo": "bar"}
 
@@ -75,11 +76,12 @@ def vacunados(request):
 
 
 def mascotas_poliza(request):
-    labels = ["Animales con poliza"]
+    labels = ["Animales con poliza", "Animales sin poliza"]
 
-    poliza = Mascota.objects.filter(numero_poliza__isnull=False).count()
+    poliza = Mascota.objects.filter(~Q(numero_poliza='')).count()
+    poliza_sin = Mascota.objects.filter(numero_poliza='').count()
 
-    contexto = {"labels": labels, "datos": [poliza], "Titulo": "Animales con poliza", "tipo": "bar"}
+    contexto = {"labels": labels, "datos": [poliza, poliza_sin], "Titulo": "Animales con poliza", "tipo": "bar"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
