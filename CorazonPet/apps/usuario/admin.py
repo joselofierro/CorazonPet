@@ -50,3 +50,4 @@ class VacunaUsuarioAdmin(admin.ModelAdmin):
 
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(VacunaUsuario, VacunaUsuarioAdmin)
+admin.site.register(RecuperarContrasena)

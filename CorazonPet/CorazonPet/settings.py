@@ -30,10 +30,9 @@ SECRET_KEY = '+x1*e*agb*v25y!w@eeft#ay)%rf2g@t6)y&3tqjvdmy5b9x%7'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.10.227',
+    '192.168.10.14',
     '.elasticbeanstalk.com',
     '.corazonpet.com',
-    'localhost'
 ]
 
 # Application definition

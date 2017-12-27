@@ -15,7 +15,7 @@ def upload_location(instance, filename):
 
 class MascotaPremium(models.Model):
     mascota = models.OneToOneField(Mascota, related_name='mascota_premium')
-    microchip = models.TextField(max_length=15)
+    microchip = models.TextField(max_length=15, unique=True)
     codigoqr = models.ImageField(upload_to=upload_location, blank=True)
 
     def __str__(self):

@@ -63,14 +63,14 @@ def razas_mascota_perro(request):
 
 
 def razas_mascota_gato(request):
+    # mascotas por el tipo de mascota = GATO
     mascotas = Mascota.objects.filter(raza__tipo_mascota__nombre="Gato")
-
     labels = []
     datos = []
-
+    # recorremos las mascotas agregamos al listado el nombre de raza que existen
     for mascota in mascotas:
         labels.append(mascota.raza.nombre)
-
+    #
     for raza in labels:
         datos.append(Mascota.objects.filter(raza__nombre=raza).count())
 

@@ -51,7 +51,8 @@ urlpatterns = [
     # url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
     url(r'^cambiar_foto_medicamento/(?P<pk>\d+)/$', cambiar_foto_medicamento, name='cambiar_foto_medicamento'),
     url(r'^mascota_perdida_microchip/(?P<microchip>.+)/$', getMascotaPerdidaByMicrochip, name='mascota_perdia_micrhochip'),
-    url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna')
+    url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna'),
+    url(r'^olvide_contrasena$', olvide_contrasena, name='olvide_password'),
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)

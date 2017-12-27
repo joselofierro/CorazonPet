@@ -781,25 +781,36 @@ def getMascotaPerdidaByMicrochip(request, microchip):
 def olvide_contrasena(request):
     if request.method == 'POST':
         try:
+            # obtenemos el usuario por el email que llega
             usuario = Usuario.objects.get(email=request.data['email'])
-            fecha = time.strftime("%d/%m/%Y")
+            # si la contraseña es diferente de vacia
+            if usuario.contrasena != '':
+                # obtenemos la fecha de hoy
+                fecha = time.strftime("%d/%m/%Y")
+                # parseamos el email y la fecha a string con utf-8
+                token = hashlib.sha1(str(usuario.email + "_" + fecha).encode('utf-8')).hexdigest()
+                try:
+                    # obtenemos el objeto recuperar contraseña por el email del user
+                    RecuperarContrasena.objects.get(usuario__email=request.data['email'])
+                    return Response({'data': 'Ya has solicitado recuperar contraseña'}, status=status.HTTP_200_OK)
+                except RecuperarContrasena.DoesNotExist:
+                    # creamos el registro en la tabla recuperar
+                    RecuperarContrasena.objects.create(usuario=usuario, token=token)
 
-            token = hashlib.sha1(usuario.email + "_" + fecha)
+                    msg = render_to_string('mail_templates/recuperar_contrasena.html', {
+                        'token': token
+                    })
 
-            RecuperarContrasena.objects.create(usuario=usuario, token=token)
+                    send_mail(
+                        'Reestablecer contraseña corazónpet',
+                        'Mensaje',
+                        'backend.corazon@gmail.com',
+                        [usuario.email],
+                        html_message=msg)
 
-            msg = render_to_string('mail_templates/recuperar_contrasena.html', {
-                'token': token
-            })
-
-            send_mail(
-                'Reestablecer contraseña corazónpet',
-                'Mensaje',
-                'backend.corazon@gmail.com',
-                [usuario.email],
-                html_message=msg)
-
-            return Response({"data": "Te hemos enviado un email, sigue los pasos"}, status=status.HTTP_200_OK)
+                return Response({"data": "Te hemos enviado un email, sigue los pasos"}, status=status.HTTP_200_OK)
+            else:
+                return Response({'data': "Tu ingresas con Facebook"}, status=status.HTTP_404_NOT_FOUND)
 
         except Usuario.DoesNotExist:
             return Response({'data': "No existe usuario con este email"}, status=status.HTTP_404_NOT_FOUND)
