@@ -10,7 +10,12 @@ from apps.usuario.models import RecuperarContrasena
 
 def restablecer_password(request, token):
     if request.method == "GET":
-        return render(request, 'mail_templates/app_recuperar_contrasena.html', {"token": token})
+        try:
+            RecuperarContrasena.objects.get(token=token)
+            return render(request, 'mail_templates/app_recuperar_contrasena.html', {"token": token})
+        except RecuperarContrasena.DoesNotExist:
+            return render(request, 'mail_templates/ContrasenaCambiada.html',
+                          {'mensaje': 'No se ha solicitado restablecimiento de contraseña'})
     elif request.method == "POST":
         token = request.POST.get('token')
         password = request.POST.get('pass')
@@ -38,5 +43,3 @@ def restablecer_password(request, token):
         except RecuperarContrasena.DoesNotExist:
             return render(request, 'mail_templates/ContrasenaCambiada.html',
                           {'mensaje': 'No se ha solicitado un restablecimiento de contraseña'})
-
-

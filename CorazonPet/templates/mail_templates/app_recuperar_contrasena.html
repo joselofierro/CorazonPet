@@ -13,7 +13,7 @@
 <body>
 <!-- button to Open App to specific screen for existing app users -->
 <!--2do template que se muestra-->
-<form method="post" name="formularioRestablecer">
+<form method="post">
     {% csrf_token %}
 
     <input type="hidden" name="token" id="token" value="{{ token }}">
