@@ -2,16 +2,49 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0"/>
     <title>CorazónPet</title>
-    <style>@media screen and (max-device-width:480px){body{-webkit-text-size-adjust:none}}</style>
+    <style>@media screen and (max-device-width: 480px) {
+        body {
+            -webkit-text-size-adjust: none
+        }
+    }</style>
 </head>
 <body>
-    <!-- button to Open App to specific screen for existing app users -->
-    <!--2do template que se muestra-->
-    <form action="corazonpet://restorePass/{{ token }}" target="_blank">
-        <input type="submit" value="Restablecer contraseña"/>
-    </form>
+<!-- button to Open App to specific screen for existing app users -->
+<!--2do template que se muestra-->
+<form method="post" name="formularioRestablecer">
+    {% csrf_token %}
+
+    <input type="hidden" name="token" id="token" value="{{ token }}">
+    <label for="pass">Ingresa contraseña</label>
+    <input type="password" name="pass" id="pass">
+
+    <label for="pass2">Confirma tu contraseña</label>
+    <input type="password" name="pass2" id="pass2">
+
+    <input type="button" value="Restablecer contraseña" onclick="validate_pass(this.form)"/>
+</form>
 
 </body>
+<script>
+
+    function validate_pass(formulario) {
+        var password = document.getElementById("pass").value;
+        var password2 = document.getElementById("pass2").value;
+
+        var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
+        if (password === "" || password2 === "") {
+            alert("Los campos contraseña y confirma tu contraseña no pueden estar vacios.")
+        } else if (password !== password2) {
+            alert("Las contraseñas no coinciden")
+        } else if (!regex.test(password)) {
+            alert("Contraseña debil, debe contener:\n* Letra mayúscula\n* Letra minúscula\n* Número\n* Caracter especial (!, @, #, %, &)\n* Ser mínimo de 8 caracteres");
+        } else {
+            formulario.submit();
+        }
+    }
+
+
+</script>
 </html>

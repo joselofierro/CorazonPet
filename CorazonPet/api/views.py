@@ -814,36 +814,3 @@ def olvide_contrasena(request):
 
         except Usuario.DoesNotExist:
             return Response({'data': "No existe usuario con este email"}, status=status.HTTP_404_NOT_FOUND)
-
-
-@api_view(['POST'])
-def restablecer_password(request):
-    if request.method == 'POST':
-        token_data = request.data['token']
-        # eliminamos el ultimo caracter del token
-        token_data = token_data[:-1]
-        new_pass = request.data['contrasena']
-
-        try:
-            # obtenemos el objeto de recuperar por el token que llega
-            token_data = RecuperarContrasena.objects.get(token=token_data)
-            # obtenemos la fecha de hoy
-            fecha = time.strftime("%d/%m/%Y")
-            # token de hoy con el email del registro
-            token_hoy = hashlib.sha1(str(token_data.usuario.email + "_" + fecha).encode('utf-8')).hexdigest()
-
-            # si lo solicitud el mismo dia
-            if token_data.token == token_hoy:
-                user_token = token_data.usuario
-                user_token.contrasena = make_password(new_pass, salt=None, hasher='sha1')
-                user_token.save()
-                token_data.delete()
-                return Response({'data': 'Tu contraseña se ha restablecido satisfactoriamente'},
-                                status=status.HTTP_200_OK)
-            else:
-                token_data.delete()
-                return Response({'data': 'Tu solicitud de restablecimiento ha caducado'},
-                                status=status.HTTP_400_BAD_REQUEST)
-        except RecuperarContrasena.DoesNotExist:
-            return Response({'data': 'No se ha solicitado un restablecimiento de contraseña'},
-                            status=status.HTTP_400_BAD_REQUEST)
