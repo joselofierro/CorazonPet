@@ -51,6 +51,8 @@
         }
 
 
+
+
     </style>
 {% endblock %}
 {% block branding %}
@@ -58,8 +60,54 @@
         <img class="img-logo" src="{% static 'imagenes/logotipo.png' %}">
     </a>
 {% endblock %}
-{% block sidebar %}
-    <h3>Hola mundo</h3>
+
+{% block estadisticas %}
+    <div class="app-estadisticas module" style="width: 100%!important">
+		<table>
+			<caption>
+				<a href="" class="section" title="Estadistica">Estadisticas</a>
+			</caption>
+			<tbody>
+				<tr class="model-cantid">
+					<th scope="row">Mascotas por ciudad</th>
+					<td><a href="{% url 'estadisticas:mascota_ciudad_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Mascotas por genero</th>
+					<td><a href="{% url 'estadisticas:mascota_genero_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Tipos de mascota</th>
+					<td><a href="{% url 'estadisticas:tipo_mascota_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Mascotas por raza de perro</th>
+					<td><a href="{% url 'estadisticas:raza_mascota_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Mascotas por raza de gatos</th>
+					<td><a href="{% url 'estadisticas:raza_mascota_estadistica2' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Esterilizados</th>
+					<td><a href="{% url 'estadisticas:mascotas_esterilizadas_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Vacunados</th>
+					<td><a href="{% url 'estadisticas:mascotas_vacunas_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Mascotas con poliza</th>
+					<td><a href="{% url 'estadisticas:mascotas_poliza_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Mascotas con microchip</th>
+					<td><a href="{% url 'estadisticas:mascotas_premium_estadistica' %}" class="addlink">Ver</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 {% endblock %}
+
 
 {% block nav-global %}{% endblock %}

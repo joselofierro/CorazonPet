@@ -6,7 +6,13 @@
 {{ media }}
 {% endblock %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+    <style>
+        div.app-estadisticas{
+            display: none;
+        }
+    </style>
+{% endblock %}
 
 {% block coltype %}colM{% endblock %}
 
@@ -76,6 +82,7 @@
             {% endif %}>
     </script>
 {% endblock %}
+
 
 {# JavaScript for prepopulated fields #}
 {% prepopulated_fields_js %}

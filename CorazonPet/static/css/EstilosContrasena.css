@@ -1,0 +1,147 @@
+html {
+   color: #757575 ;
+   font-size: 1em;
+   line-height: 1.4;
+}
+
+::-moz-selection {
+   background: #b3d4fc ;
+   text-shadow: none;
+}
+
+::selection {
+   background: #b3d4fc ;
+   text-shadow: none;
+}
+
+@font-face {
+   font-family: Vision;
+   src: url("//fonts/vision.otf");
+}
+
+body {
+   background: url("../img/patron.png");
+}
+
+.contenedor {
+   display: flex;
+   width: 100%;
+   height: 100vh;
+   justify-content: center;
+   align-items: center;
+   flex-wrap: wrap;
+   align-content: center;
+}
+
+.contenedor-centro {
+   width: 360px;
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+}
+
+.logo img {
+   margin: 0 auto 3em auto;
+   display: block;
+   width: auto;
+   height: auto;
+}
+
+.contenedor-centro .card {
+   width: 100%;
+   background: #ffffff ;
+   box-shadow: 0px 2px 18px 0px rgba(0, 0, 0, 0.3);
+}
+
+.titulo {
+   font-size: 24px;
+   text-align: center;
+   color: #757575 ;
+   margin-top: 30px;
+   margin-bottom: 30px;
+}
+
+.form {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+.form span {
+   display: none;
+}
+
+.form input {
+   height: 60px;
+   margin: 20px 0;
+   width: 100%;
+   border-radius: 10px;
+   border: 1px #E4E8E9 solid;
+   color: #E4E8E9 ;
+   font-size: 20px;
+
+}
+
+.form label {
+   display: none;
+
+}
+
+.form .btn_restablecer {
+   text-decoration: none;
+   height: 50px;
+   background: -moz-linear-gradient(-45deg, rgba(240, 203, 35, 1) 0%, rgba(243, 136, 58, 1) 100%);
+   background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(240, 203, 35, 1)), color-stop(100%, rgba(243, 136, 58, 1)));
+   background: -webkit-linear-gradient(-45deg, rgba(240, 203, 35, 1) 0%, rgba(243, 136, 58, 1) 100%);
+   width: 90%;
+   text-align: center;
+   padding: 5px;
+   border-radius: 10px;
+   border: 1px #757575 solid;
+   color: #ffffff ;
+   font-size: 22px;
+   margin-top: 20px;
+   margin-bottom: 80px;
+}
+
+@media (max-width: 480px) {
+
+   .logo img {
+       width: 80%;
+   }
+
+   .contenedor-centro {
+       width: 70%;
+   }
+
+   .titulo {
+       font-size: 18px;
+       padding-right: 10px;
+       padding-left: 10px;
+   }
+
+   .form input {
+       font-size: 16px;
+       height: 40px;
+       margin: 10px 0;
+
+   }
+
+   .contenedor-centro .card div {
+       padding-right: 0px;
+       padding-left: 0px;
+   }
+
+}
+
+@media (max-width: 414px) {
+
+   .logo img {
+       width: 90%;
+   }
+
+   .contenedor-centro {
+       width: 90%;
+   }
+
+}

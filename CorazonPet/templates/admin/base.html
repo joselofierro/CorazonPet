@@ -82,15 +82,20 @@
             {% block object-tools %}{% endblock %}
             {{ content }}
         {% endblock %}
+
         {% block sidebar %}{% endblock %}
         <br class="clear"/>
+        {% block estadisticas %}
+
+        {% endblock %}
+
     </div>
+
     <!-- END Content -->
 
     {% block footer %}
         <div id="footer"></div>{% endblock %}
 </div>
 <!-- END Container -->
-
 </body>
 </html>

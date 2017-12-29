@@ -27,7 +27,7 @@ PASSWORD_HASHERS = [
 SECRET_KEY = '+x1*e*agb*v25y!w@eeft#ay)%rf2g@t6)y&3tqjvdmy5b9x%7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '192.168.10.14',

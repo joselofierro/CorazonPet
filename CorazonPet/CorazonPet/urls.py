@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
-from apps.usuario.views import restablecer_password
+from apps.usuario.views import restablecer_password, prueba
 
 from CorazonPet import settings
 
@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^estadisticas/', include('apps.estadistica.urls', namespace='estadisticas')),
     url(r'^restablecer_contrasena/(?P<token>.+)$', restablecer_password, name='restablecer_contrasena'),
+    url(r'^prueba$', prueba, name='restablecer_contrasena'),
 
 ]
 

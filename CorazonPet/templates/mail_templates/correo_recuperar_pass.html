@@ -1,11 +1,50 @@
+{% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>CorazónPet</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0"/>
+    <link rel="stylesheet" href="{% static 'css/EstilosContrasena.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <title>CorazónPet</title>
+    <style>@media screen and (max-device-width: 480px) {
+        body {
+            -webkit-text-size-adjust: none
+        }
+    }</style>
 </head>
-<body>
-<!-- 1er template que se muestra al recuperar password -->
-<p>Para recuperar tu contraseña ingresa <a href="https://corazonpet.com/restablecer_contrasena/{{ token }}">aquí</a></p>
+<body style="background: url('{% static 'img/patron.png' %}'); ">
+<table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+    <td style="padding: 0">
+        <img style="padding: 0; display: block" src="{% static 'img/logo_horizontal.png' %}" width="100%">
+    </td>
+    </tr>
+    <tr>
+        <td style="background-color: #ffffff">
+            <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif; box-shadow: 0px 2px 18px 0px rgba(0, 0, 0, 0.3);
+padding: 3em;">
+                <h2 style="color: #757575; margin: 0 0 7px; font-size: 25px">Hola {{ usuario }},</h2>
+                <p style="color: #757575; margin: 20px 2px; font-size: 18px">
+                    Has solicitado restablecer tu contraseña.</p>
+                <div style="width: 100%; text-align: center; padding: 5em 0;">
+                    <a style="text-decoration: none; border-radius: 5px; padding: 15px 40px; font-size: 22px; color: white;
+background: rgba(240,203,35,1);
+background: -moz-linear-gradient(-45deg, rgba(240,203,35,1) 0%, rgba(243,136,58,1) 100%);
+background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(240,203,35,1)), color-stop(100%, rgba(243,136,58,1)));
+background: -webkit-linear-gradient(-45deg, rgba(240,203,35,1) 0%, rgba(243,136,58,1) 100%);
+background: -o-linear-gradient(-45deg, rgba(240,203,35,1) 0%, rgba(243,136,58,1) 100%);
+background: -ms-linear-gradient(-45deg, rgba(240,203,35,1) 0%, rgba(243,136,58,1) 100%);
+background: linear-gradient(135deg, rgba(240,203,35,1) 0%, rgba(243,136,58,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0cb23', endColorstr='#f3883a', GradientType=1 );
+" href="https://corazonpet.com/restablecer_contrasena/{{ token }}">Restablecer</a>
+                </div>
+                <p style="color: #757575; margin: 0 0 7px; font-size: 18px">Atentamente,<br>Equipo técnico de CorazónPet
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

@@ -1,10 +1,42 @@
+{% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>CorazónPet</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0"/>
+    <link rel="stylesheet" href="{% static 'css/EstilosContrasena.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <title>CorazónPet</title>
+    <style>@media screen and (max-device-width: 480px) {
+        body {
+            -webkit-text-size-adjust: none
+        }
+    }</style>
 </head>
 <body>
-<h2>{{ mensaje }}</h2>
+
+<div class="contenedor">
+
+    <div class="col-xs-12 logo et-waypoint et_pb_animation_bottom et_pb_counters et-animated">
+        <img src="{% static 'img/logo_horizontal.png' %}" height="110" width="446" alt="">
+    </div>
+
+    <div class="contenedor-centro">
+
+        <div class="col-xs-12 card">
+            <div class="col-xs-12">
+
+                <h1 class="titulo">{{ mensaje }}</h1>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 </body>
+
 </html>

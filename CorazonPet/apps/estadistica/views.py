@@ -5,21 +5,18 @@ from django.shortcuts import render
 from apps.ciudad.models import Ciudad
 from apps.historial_vacuna.models import HistorialVacuna
 from apps.mascota.models import Mascota
-from apps.mascota_perdida.models import MascotaPerdida
 from apps.mascota_premium.models import MascotaPremium
-from apps.raza.models import Raza
 from apps.tipo_mascota.models import TipoMascota
 
 
 # el chart js se alimenta de un JSON con los datos para poder graficar
-
 def mascotas_ciudad(request):
     ciudades = Ciudad.objects.all().values_list('nombre', flat=True)
     list_ciudad = []
     for ciudad in ciudades:
         list_ciudad.append(Mascota.objects.filter(usuario__ciudad__nombre=ciudad).count())
 
-    contexto = {"labels": ciudades, "datos": list_ciudad, "titulo": "Mascotas por ciudad", "tipo": "pie"}
+    contexto = {"labels": ciudades, "datos": [list_ciudad] ,"titulo": "Mascotas por ciudad", "tipo": "pie"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
@@ -111,7 +108,7 @@ def mascotas_poliza(request):
     poliza_con = Mascota.objects.filter(~Q(numero_poliza='')).count()
     poliza_sin = Mascota.objects.filter(numero_poliza='').count()
 
-    contexto = {"labels": labels, "datos": [poliza_con, poliza_sin], "Titulo": "Animales con poliza", "tipo": "bar"}
+    contexto = {"labels": labels, "datos": [poliza_con, poliza_sin], "titulo": "Animales con poliza", "tipo": "bar"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')
 
@@ -120,6 +117,6 @@ def mascotas_microchip(request):
     labels = ["Mascota con Microchip"]
     mascotas_premium = MascotaPremium.objects.all().count()
 
-    contexto = {"labels": labels, "datos": mascotas_premium, "Titulo": "Identificación", "tipo": "pie"}
+    contexto = {"labels": labels, "datos": [mascotas_premium], "titulo": "Mascotas con microchip", "tipo": "pie"}
 
     return render(request, 'estadistica/estadisticas.html', contexto, content_type='text/html')

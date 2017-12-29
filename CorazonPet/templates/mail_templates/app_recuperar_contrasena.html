@@ -1,49 +1,74 @@
-<!doctype html>
-<html>
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0"/>
-    <title>CorazónPet</title>
-    <style>@media screen and (max-device-width: 480px) {
-        body {
-            -webkit-text-size-adjust: none
-        }
-    }</style>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0"/>
+   <link rel="stylesheet" href="{% static 'css/EstilosContrasena.css' %}">
+   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+   <title>CorazónPet</title>
+   <style>@media screen and (max-device-width: 480px) {
+       body {
+           -webkit-text-size-adjust: none
+       }
+   }</style>
 </head>
 <body>
-<!-- button to Open App to specific screen for existing app users -->
-<!--2do template que se muestra-->
-<form method="post">
-    {% csrf_token %}
 
-    <input type="hidden" name="token" id="token" value="{{ token }}">
-    <label for="pass">Ingresa contraseña</label>
-    <input type="password" name="pass" id="pass">
+<div class="contenedor">
 
-    <label for="pass2">Confirma tu contraseña</label>
-    <input type="password" name="pass2" id="pass2">
+   <div class="col-xs-12 logo et-waypoint et_pb_animation_bottom et_pb_counters et-animated">
+       <img src="{% static 'img/logo_horizontal.png' %}" height="110" width="446" alt="">
+   </div>
 
-    <input type="button" value="Restablecer contraseña" onclick="validate_pass(this.form)"/>
-</form>
+   <div class="contenedor-centro">
+
+       <div class="col-xs-12 card">
+           <div class="col-xs-12">
+
+               <!-- button to Open App to specific screen for existing app users -->
+               <!--2do template que se muestra-->
+               <h1 class="titulo">Restablecer Contraseña</h1>
+               <form method="post" name="formularioRestablecer" class="col-xs-12 form">
+                   <span>{% csrf_token %}</span>
+
+                   <input type="hidden" name="token" id="token" value="{{ token }}" class="col-xs-12">
+                   <label for="pass" class="col-xs-12">Ingresa contraseña</label>
+                   <input type="password" name="pass" id="pass" placeholder="Nueva Contraseña" class="col-xs-12">
+
+                   <label for="pass2" class="col-xs-12">Confirma tu contraseña</label>
+                   <input type="password" name="pass2" id="pass2" placeholder="Repetir Contraseña" class="col-xs-12">
+
+
+                   <a href="#" class="btn_restablecer" onclick="validate_pass(this.form)">Restablecer
+                   </a>
+               </form>
+           </div>
+       </div>
+
+   </div>
+</div>
+</div>
+
 
 </body>
 <script>
 
-    function validate_pass(formulario) {
-        var password = document.getElementById("pass").value;
-        var password2 = document.getElementById("pass2").value;
+   function validate_pass(formulario) {
+       var password = document.getElementById("pass").value;
+       var password2 = document.getElementById("pass2").value;
 
-        var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
-        if (password === "" || password2 === "") {
-            alert("Los campos contraseña y confirma tu contraseña no pueden estar vacios.")
-        } else if (password !== password2) {
-            alert("Las contraseñas no coinciden")
-        } else if (!regex.test(password)) {
-            alert("Contraseña debil, debe contener:\n* Letra mayúscula\n* Letra minúscula\n* Número\n* Caracter especial (!, @, #, %, &)\n* Ser mínimo de 8 caracteres");
-        } else {
-            formulario.submit();
-        }
-    }
+       var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
+       if (password === "" || password2 === "") {
+           alert("Los campos contraseña y confirma tu contraseña no pueden estar vacios.")
+       } else if (password !== password2) {
+           alert("Las contraseñas no coinciden")
+       } else if (!regex.test(password)) {
+           alert("Contraseña debil, debe contener:\n* Letra mayúscula\n* Letra minúscula\n* Número\n* Caracter especial (!, @, #, %, &)\n* Ser mínimo de 8 caracteres");
+       } else {
+           formulario.submit();
+       }
+   }
 
 
 </script>
