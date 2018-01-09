@@ -465,7 +465,7 @@ def find_pet_premium(request):
         'Han encontrado una mascota premium',
         'Mensaje',
         'backend.corazon@gmail.com',
-        ['giussepr@gmail.com'],
+        ['diana.sendoya@gmail.com', 'juanpps78@gmail.com'],
         html_message=msg)
 
     return Response({'data': 'Notificacion enviada'}, status=status.HTTP_201_CREATED)

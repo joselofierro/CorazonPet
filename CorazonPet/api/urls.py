@@ -48,7 +48,6 @@ urlpatterns = [
     url(r'^eliminar_foto_mascota/(?P<pk>\d+)/$', eliminar_foto_mascota, name='eliminar_foto_mascota'),
     url(r'^generar_volante$', generatevolante, name='generate_volante_api'),
     url(r'^eliminar_reporte_mascota/(?P<pk>\d+)/$', eliminar_reporte_mascota_perdida, name='eliminar_reporte_api'),
-    # url(r'^login-token$', LoginTokenApi.as_view(), name='login_token_api'),
     url(r'^cambiar_foto_medicamento/(?P<pk>\d+)/$', cambiar_foto_medicamento, name='cambiar_foto_medicamento'),
     url(r'^mascota_perdida_microchip/(?P<microchip>.+)/$', getMascotaPerdidaByMicrochip, name='mascota_perdia_micrhochip'),
     url(r'^eliminar_id_vacuna$', delete_vacuna_usuario, name='eliminar_id_vacuna'),
