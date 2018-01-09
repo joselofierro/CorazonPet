@@ -30,7 +30,7 @@ SECRET_KEY = '+x1*e*agb*v25y!w@eeft#ay)%rf2g@t6)y&3tqjvdmy5b9x%7'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.10.53',
+    '192.168.10.73',
     '.elasticbeanstalk.com',
     '.corazonpet.com',
 ]

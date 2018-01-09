@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^tipo_mascotas$', TipoMascotaAPI.as_view(), name='tipos_mascotas_api'),
     url(r'^crear_razas$', crear_raza, name='crear_razas_api'),
     url(r'^listado_razas/(?P<id>\d+)/$', ListadoMascotaApi.as_view(), name='listado_raza'),
+    url(r'^usuario_by_id/(?P<pk>\d+)/$', getuserbyid, name='usuario_id'),
     url(r'^usuarios$', CreateUser.as_view(), name='user_api'),
     url(r'^usuario/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ListUserByCorreo.as_view(),
         name='user_id_api'),

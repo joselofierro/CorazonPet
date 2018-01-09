@@ -132,6 +132,24 @@ def login(request):
             return Response({'data': 'No existe usuario con este email'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def getuserbyid(request, pk):
+    if request.method == 'GET':
+        try:
+            usuario = Usuario.objects.get(idFacebook=pk)
+            token = Token.objects.get(user=usuario.user_token)
+            usuario_serializer = CreateUserSerializer(usuario)
+            # guardamos la data en una variable
+            json_serializer = usuario_serializer.data
+            # eliminamos el campo user_token
+            json_serializer.pop('user_token')
+            # agregamos el campo token con la llave del token
+            json_serializer['token'] = token.key
+            return Response(json_serializer, status=status.HTTP_200_OK)
+        except Usuario.DoesNotExist:
+            return Response({'data': "No existe usuario"}, status=status.HTTP_404_NOT_FOUND)
+
+
 # API de listado de usuario por correo
 class ListUserByCorreo(APIView):
     def get(self, request, email):
